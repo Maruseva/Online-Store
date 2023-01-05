@@ -1,12 +1,15 @@
-import logo from '../../assets/img/logo.png';
+import template from './header.template.html';
+import './header.style.css';
 
 export class HeaderView {
+    private id: string;
+    constructor(id: string) {
+        this.id = id;
+    }
     public render(): void {
-        const body = <HTMLBodyElement>document.getElementById('body');
+        const body = <HTMLBodyElement>document.getElementById(this.id);
         const header = <HTMLElement>document.createElement('header');
-        const logo = <HTMLImageElement>document.createElement('img');
-
-        logo.appendChild(header);
-        header.appendChild(body);
+        header.innerHTML = template;
+        body.appendChild(header);
     }
 }

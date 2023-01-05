@@ -2,6 +2,7 @@ const path = require('path');
 const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const baseConfig = {
     entry: path.resolve(__dirname, './src/index.ts'),
@@ -24,7 +25,7 @@ const baseConfig = {
     },
     output: {
         filename: 'index.js',
-        path: path.resolve(__dirname, '../dist'),
+        path: path.resolve(__dirname, './dist'),
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -32,6 +33,9 @@ const baseConfig = {
             filename: 'index.html',
         }),
         new CleanWebpackPlugin(),
+        new CopyPlugin({
+            patterns: [{ from: './src/assets/data', to: 'assets' }],
+        }),
     ],
 };
 
@@ -40,17 +44,4 @@ module.exports = ({ mode }) => {
     const envConfig = isProductionMode ? require('./webpack.prod.config') : require('./webpack.dev.config');
 
     return merge(baseConfig, envConfig);
-};
-
-const CopyPlugin = require('copy-webpack-plugin');
-
-module.exports = {
-    plugins: [
-        new CopyPlugin({
-            patterns: [
-                { from: 'source', to: 'dest' },
-                { from: 'other', to: 'public' },
-            ],
-        }),
-    ],
 };

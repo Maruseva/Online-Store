@@ -2,7 +2,7 @@ import template from './header.template.html';
 import './header.style.css';
 
 export class HeaderView {
-    private id: string;
+    private readonly id: string;
     constructor(id: string) {
         this.id = id;
     }

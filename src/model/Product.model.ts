@@ -1,4 +1,4 @@
-import products from '../assets/data/products.json';
+import data from '../assets/data/products.json';
 
 export interface Product {
     id: number;
@@ -14,8 +14,8 @@ export interface Product {
     images: string[];
 }
 
-class ProductModel {
-    getAll(): Product[] {
-        return products.products;
+export class ProductModel {
+    public getAll(): Product[] {
+        return data.products;
     }
 }

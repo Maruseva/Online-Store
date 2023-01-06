@@ -1,0 +1,12 @@
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #181a1c;
+}
+
+p {
+    color: #ff9800;
+    font-size: 30px;
+}

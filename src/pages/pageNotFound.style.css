@@ -1,12 +1,12 @@
-footer {
-    height: 120px;
+body {
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     background: #181a1c;
 }
 
-.footer_text {
+.pageNotFound_text {
     color: #ff9800;
-    font-size: 15px;
+    font-size: 30px;
 }

@@ -1,0 +1,14 @@
+.card_item {
+    height: 400px;
+    width: 250px;
+    border: solid 2px #ff9800;
+    border-radius: 10px;
+}
+
+h3 {
+    background: #1a1c1d 10%;
+    text-align: center;
+    color: #ff9800;
+    font-size: 20px;
+    border-bottom: #ff9800 2px;
+}

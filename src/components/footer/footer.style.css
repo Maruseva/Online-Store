@@ -6,7 +6,7 @@ footer {
     background: #181a1c;
 }
 
-p {
+.footer_text {
     color: #ff9800;
     font-size: 15px;
 }

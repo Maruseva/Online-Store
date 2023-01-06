@@ -6,7 +6,7 @@ body {
     background: #181a1c;
 }
 
-p {
+.pageNotFound_text {
     color: #ff9800;
     font-size: 30px;
 }

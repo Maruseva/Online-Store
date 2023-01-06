@@ -8,6 +8,8 @@ export class PageNotFound {
     }
     public render(): void {
         const body = <HTMLElement>document.getElementById(this.id);
-        body.innerHTML = template;
+        const page = <HTMLDivElement>document.createElement('div');
+        page.innerHTML = template;
+        body.appendChild(page);
     }
 }

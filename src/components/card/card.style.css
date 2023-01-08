@@ -3,12 +3,26 @@
     width: 250px;
     border: solid 2px #ff9800;
     border-radius: 10px;
+    opacity: 0.8;
 }
 
-h3 {
-    background: #1a1c1d 10%;
+.card_item > h3 {
+    background: #1a1c1d;
     text-align: center;
     color: #ff9800;
     font-size: 20px;
-    border-bottom: #ff9800 2px;
+}
+
+.card_description {
+    border: solid 2px #ff9800;
+    margin-bottom: 150px;
+    color: #ff9800;
+}
+
+.card_button {
+    text-align: center;
+}
+
+button {
+    cursor: pointer;
 }

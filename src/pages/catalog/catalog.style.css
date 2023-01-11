@@ -10,6 +10,12 @@ main {
     border-radius: 10px;
 }
 
+#catalogProducts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
 .catalogHead {
     display: flex;
     justify-content: space-between;

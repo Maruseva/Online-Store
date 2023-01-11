@@ -1,13 +1,15 @@
 import { ProductCard } from '../../components/productCard/productCard.view';
 import { Product } from '../../model/Product.model';
-import { Options } from './catalog.controller';
+import { CatalogController } from './catalog.controller';
 import template from './catalog.template.html';
 import './catalog.style.css';
 
 export class Catalog {
     private readonly id: string;
+    private controller: CatalogController;
     constructor(id: string) {
         this.id = id;
+        this.controller = new CatalogController();
     }
     public render(): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
@@ -20,17 +22,17 @@ export class Catalog {
         catalogHead.innerHTML = template;
         catalogProducts.id = 'catalogProducts';
 
-        const option = new Options();
-        const products = option.getAll();
-
-        // products.forEach((element: Product) => {
-        //     const product = new ProductCard('catalogProducts');
-        //     product.render(element);
-        // });
+        const products = this.controller.getAll();
 
         catalog.appendChild(catalogHead);
         catalog.appendChild(catalogProducts);
         main.appendChild(catalog);
         body.appendChild(main);
+
+        const product = new ProductCard('catalogProducts');
+
+        products.forEach((element: Product) => {
+            product.render(element);
+        });
     }
 }

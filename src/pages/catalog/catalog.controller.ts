@@ -8,9 +8,4 @@ export class CatalogController {
     public getAll(): Product[] {
         return this.model.getAll();
     }
-    // public getOptions(): Partial<Product> {
-    //     document.addEventListener('click', (event) => {
-    //         return parameter;
-    //     });
-    // }
 }

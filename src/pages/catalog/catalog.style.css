@@ -22,6 +22,7 @@ main {
     align-items: center;
     background: #251916;
     border-bottom: solid 1px #ff9800;
+    border-radius: 10px 10px 0 0;
 }
 
 .catalogHead > select {

@@ -1,6 +1,8 @@
 import { ProductCard } from '../../components/productCard/productCard.view';
-import { Product, ProductModel } from '../../model/Product.model';
+import { Product } from '../../model/Product.model';
 import { Options } from './catalog.controller';
+import template from './catalog.template.html';
+import './catalog.style.css';
 
 export class Catalog {
     private readonly id: string;
@@ -8,21 +10,27 @@ export class Catalog {
         this.id = id;
     }
     public render(): void {
+        const body = <HTMLBodyElement>document.getElementById(this.id);
+        const main = <HTMLElement>document.createElement('main');
+        const catalog = <HTMLDivElement>document.createElement('div');
+        const catalogHead = <HTMLDivElement>document.createElement('div');
+        const catalogProducts = <HTMLDivElement>document.createElement('div');
+        catalog.className = 'catalog';
+        catalogHead.className = 'catalogHead';
+        catalogHead.innerHTML = template;
+        catalogProducts.id = 'catalogProducts';
+
         const option = new Options();
-        const parameter = option.getOptions();
+        const products = option.getAll();
 
-        const data = new ProductModel();
-        const products = data.getAll();
+        // products.forEach((element: Product) => {
+        //     const product = new ProductCard('catalogProducts');
+        //     product.render(element);
+        // });
 
-        for (const key in parameter) {
-            const result = products.filter((item) => {
-                item[key] === parameter[key];
-            });
-
-            result.forEach((element: Product) => {
-                const product = new ProductCard(this.id);
-                product.render(element);
-            });
-        }
+        catalog.appendChild(catalogHead);
+        catalog.appendChild(catalogProducts);
+        main.appendChild(catalog);
+        body.appendChild(main);
     }
 }

@@ -1,5 +1,5 @@
 import { ProductCard } from '../../components/productCard/productCard.view';
-import { Product } from '../../model/Product.model';
+import { Product } from '../../model/product.model';
 import { CatalogController } from './catalog.controller';
 import template from './catalog.template.html';
 import './catalog.style.css';

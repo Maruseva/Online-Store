@@ -1,0 +1,6 @@
+.options{
+    display: flex;
+    justify-content: space-between;
+    color: #b8ae66;
+    margin: 3px;
+}

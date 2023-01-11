@@ -9,17 +9,7 @@ export interface Options {
 
 export class ListCard extends Card {
     public render(title: string, options: Options[]): void {
-        let content: string = '<form>';
-
-        // products.forEach((el) => {
-        //     for (let i = 0; options.length < i; i++) {
-        //         if (el[title] === options[i]) {
-        //             break;
-        //         } else {
-        //             options.push(el[title]);
-        //         }
-        //     }
-        // });
+        let content: string = '<div>';
 
         options.forEach((element) => {
             content += `<div class="options">
@@ -31,7 +21,7 @@ export class ListCard extends Card {
             </div>`;
         });
 
-        content += '</form>';
+        content += '</div>';
 
         super.renderCard(title, content, '');
     }

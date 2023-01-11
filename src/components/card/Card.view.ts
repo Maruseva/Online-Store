@@ -5,7 +5,7 @@ export class Card {
     constructor(id: string) {
         this.id = id;
     }
-    public renderCard(title: string, content: string = '', imgUrl: string = ''): void {
+    public renderCard(title: string, content: string = '', imgUrl?: string): void {
         const container = <HTMLElement>document.getElementById(this.id);
         const item = <HTMLDivElement>document.createElement('div');
         const img = <HTMLImageElement>document.createElement('img');

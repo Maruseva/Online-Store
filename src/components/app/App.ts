@@ -13,9 +13,6 @@ export class App {
         const header = new HeaderView(this.id);
         header.render();
 
-        const pr = new ListCard(this.id);
-        pr.render('brend', a.products);
-
         const footer = new Footer(this.id);
         footer.render();
     }

@@ -12,7 +12,6 @@ export class Card {
         const itemTitle = <HTMLHeadingElement>document.createElement('h3');
         const itemContent = <HTMLDivElement>document.createElement('div');
         item.className = 'card_item';
-        itemContent.className = 'card_itemContent';
         itemTitle.innerText = title;
         itemContent.innerHTML = content;
 

@@ -1,3 +1,9 @@
+.card_itemContent {
+    position: absolute;
+    top: 50px;
+    width: 250px;
+}
+
 .card_description {
     background: #4f341c;
     width: 170px;

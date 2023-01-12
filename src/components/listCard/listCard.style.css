@@ -3,4 +3,7 @@
     justify-content: space-between;
     color: #b8ae66;
     margin: 3px;
+    height: 250px;
+    padding-top: 35px;
+    box-sizing: border-box;
 }

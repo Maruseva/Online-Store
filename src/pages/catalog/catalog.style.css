@@ -2,7 +2,7 @@ main {
     background: #400d06;
     box-sizing: border-box;
     padding: 20px;
-    
+    display: flex;
 }
 
 .catalog {

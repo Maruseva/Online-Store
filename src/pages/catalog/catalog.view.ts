@@ -1,6 +1,6 @@
 import { ProductCard } from '../../components/productCard/productCard.view';
 import { Product } from '../../model/product.model';
-import { CatalogController } from './catalog.controller';
+import { CatalogController, ListFilter } from './catalog.controller';
 import { ListCard } from '../../components/listCard/listCard.view';
 import template from './catalog.template.html';
 import './catalog.style.css';
@@ -40,8 +40,13 @@ export class Catalog {
             product.render(element);
         });
 
+        const filter = new ListFilter();
+        const a = filter.getCategory(products);
+        const b = filter.getBrand(products);
+
         const list = new ListCard('menu');
-        list.render('Brand', [{ category: 'string', totalQuantity: 6, displayQuantity: 3 }]);
+        list.render('Category', a);
+        list.render('Brand', b);
 
         const slider = new SliderCard('menu');
         slider.render('jhbfjhr', { min: 123, max: 5959 });

@@ -1,9 +1,14 @@
+.options_wrap {
+    box-sizing: border-box;
+    height: 250px;
+    padding-top: 22px;
+    overflow: scroll;
+}
 .options{
     display: flex;
     justify-content: space-between;
     color: #b8ae66;
     margin: 3px;
-    height: 250px;
-    padding-top: 35px;
+    padding-top: 5px;
     box-sizing: border-box;
 }

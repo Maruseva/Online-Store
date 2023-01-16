@@ -34,6 +34,11 @@ export class Catalog {
         main.appendChild(catalog);
         body.appendChild(main);
 
+        const catalogHeadText = document.getElementsByClassName('catalogHead_text');
+        const span = document.createElement('span');
+        span.innerText = `Found: ${products.length}`;
+        catalogHeadText[0].appendChild(span);
+
         const product = new ProductCard('catalogProducts');
 
         products.forEach((element: Product) => {

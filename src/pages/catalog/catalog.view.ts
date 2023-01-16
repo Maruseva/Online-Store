@@ -40,8 +40,12 @@ export class Catalog {
             product.render(element);
         });
 
+        const category = this.controller.getCategory(products);
+        const brand = this.controller.getBrand(products);
+
         const list = new ListCard('menu');
-        list.render('Brand', [{ category: 'string', totalQuantity: 6, displayQuantity: 3 }]);
+        list.render('Category', category);
+        list.render('Brand', brand);
 
         const slider = new SliderCard('menu');
         slider.render('jhbfjhr', { min: 123, max: 5959 });

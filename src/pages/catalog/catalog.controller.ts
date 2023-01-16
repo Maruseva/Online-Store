@@ -9,16 +9,11 @@ export class CatalogController {
     public getAll(): Product[] {
         return this.model.getAll();
     }
-}
 
-export class ListFilter {
     public getCategory(products: Product[]): Options[] {
-        const parameter: string[] = [];
         const options: Options[] = [];
-        products.forEach((element) => {
-            parameter.push(element.category);
-        });
 
+        const parameter: string[] = products.map((element) => element.category);
         const category = new Set(parameter);
 
         category.forEach((element) => {
@@ -37,15 +32,12 @@ export class ListFilter {
     }
 
     public getBrand(products: Product[]): Options[] {
-        const parameter: string[] = [];
         const options: Options[] = [];
-        products.forEach((element) => {
-            parameter.push(element.brand);
-        });
 
-        const category = new Set(parameter);
+        const parameter: string[] = products.map((element) => element.category);
+        const brand = new Set(parameter);
 
-        category.forEach((element) => {
+        brand.forEach((element) => {
             options.push({ category: element, totalQuantity: 0, displayQuantity: 0 });
         });
 

@@ -1,8 +1,8 @@
 .options_wrap {
     box-sizing: border-box;
     height: 250px;
-    padding-top: 22px;
-    overflow: scroll;
+    margin-top: 22px;
+    overflow-y: scroll;
 }
 .options{
     display: flex;

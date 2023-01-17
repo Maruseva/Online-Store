@@ -20,4 +20,13 @@ export class App {
         this.catalog.render();
         this.footer.render();
     }
+
+    public clear(): void {
+        const header = document.getElementsByTagName('header');
+        const main = document.getElementsByTagName('main');
+        const footer = document.getElementsByTagName('footer');
+        header[0].remove();
+        main[0].remove();
+        footer[0].remove();
+    }
 }

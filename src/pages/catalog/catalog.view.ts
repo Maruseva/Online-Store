@@ -5,7 +5,7 @@ import { ListCard } from '../../components/listCard/listCard.view';
 import template from './catalog.template.html';
 import './catalog.style.css';
 import { SliderCard } from '../../components/sliderCard/sliderCard.view';
-import { changeUrl } from '../../utils/url';
+import { changeUrl, getUrlValue } from '../../utils/url';
 
 export class Catalog {
     private readonly id: string;
@@ -42,15 +42,13 @@ export class Catalog {
 
         const product = new ProductCard('catalogProducts');
 
-        const url = new URL(window.location.href);
-        const urlValue = url.searchParams.get('view-mode');
+        const url = window.location.href;
+        const urlValue = getUrlValue(url, 'view-mode');
 
         products.forEach((element: Product) => {
             if (urlValue === 'small') {
                 product.renderSmallCard(element);
-            }
-
-            if (urlValue === 'big') {
+            } else {
                 product.renderBigCard(element);
             }
         });
@@ -69,20 +67,13 @@ export class Catalog {
         const modeBig = <HTMLImageElement>document.getElementById('mode_big');
 
         modeSmall.addEventListener('click', () => {
-            changeUrl('view-mode', 'small');
+            const url = window.location.href;
+            changeUrl(url, 'view-mode', 'small');
         });
 
         modeBig.addEventListener('click', () => {
-            changeUrl('view-mode', 'big');
+            const url = window.location.href;
+            changeUrl(url, 'view-mode', 'big');
         });
-    }
-
-    public clear(): void {
-        const header = document.getElementsByTagName('header');
-        const main = document.getElementsByTagName('main');
-        const footer = document.getElementsByTagName('footer');
-        header[0].remove();
-        main[0].remove();
-        footer[0].remove();
     }
 }

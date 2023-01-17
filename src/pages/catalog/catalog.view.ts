@@ -5,6 +5,7 @@ import { ListCard } from '../../components/listCard/listCard.view';
 import template from './catalog.template.html';
 import './catalog.style.css';
 import { SliderCard } from '../../components/sliderCard/sliderCard.view';
+import { changeUrl, getUrlValue } from '../../utils/url';
 
 export class Catalog {
     private readonly id: string;
@@ -41,8 +42,15 @@ export class Catalog {
 
         const product = new ProductCard('catalogProducts');
 
+        const url = window.location.href;
+        const urlValue = getUrlValue(url, 'view-mode');
+
         products.forEach((element: Product) => {
-            product.render(element);
+            if (urlValue === 'small') {
+                product.renderSmallCard(element);
+            } else {
+                product.renderBigCard(element);
+            }
         });
 
         const category = this.controller.getCategory(products);
@@ -54,5 +62,18 @@ export class Catalog {
 
         const slider = new SliderCard('menu');
         slider.render('jhbfjhr', { min: 123, max: 5959 });
+
+        const modeSmall = <HTMLImageElement>document.getElementById('mode_small');
+        const modeBig = <HTMLImageElement>document.getElementById('mode_big');
+
+        modeSmall.addEventListener('click', () => {
+            const url = window.location.href;
+            changeUrl(url, 'view-mode', 'small');
+        });
+
+        modeBig.addEventListener('click', () => {
+            const url = window.location.href;
+            changeUrl(url, 'view-mode', 'big');
+        });
     }
 }

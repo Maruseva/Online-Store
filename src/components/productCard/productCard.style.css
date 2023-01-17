@@ -1,7 +1,12 @@
-.card_itemContent {
-    position: absolute;
-    top: 50px;
+.card_itemContent_big {
+    height: 250px;
     width: 250px;
+}
+
+.card_itemContent_wrap {
+    position: relative;
+    top: 50px;
+    z-index: 1;
 }
 
 .card_description {
@@ -19,4 +24,33 @@
 
 button {
     cursor: pointer;
+}
+
+.card_itemContent_big > img {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.card_itemContent_small {
+    height: 150px;
+    width: 200px;
+}
+
+.card_itemContent_small > img {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.card_itemContent_small > .card_button {
+    position: relative;
+    top: 110px;
+    z-index: 1;
 }

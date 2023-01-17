@@ -34,7 +34,7 @@ export class CatalogController {
     public getBrand(products: Product[]): Options[] {
         const options: Options[] = [];
 
-        const parameter: string[] = products.map((element) => element.category);
+        const parameter: string[] = products.map((element) => element.brand);
         const brand = new Set(parameter);
 
         brand.forEach((element) => {

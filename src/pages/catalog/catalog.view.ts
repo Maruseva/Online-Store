@@ -5,6 +5,7 @@ import { ListCard } from '../../components/listCard/listCard.view';
 import template from './catalog.template.html';
 import './catalog.style.css';
 import { SliderCard } from '../../components/sliderCard/sliderCard.view';
+import { changeUrl } from '../../utils/url';
 
 export class Catalog {
     private readonly id: string;
@@ -41,8 +42,17 @@ export class Catalog {
 
         const product = new ProductCard('catalogProducts');
 
+        const url = new URL(window.location.href);
+        const urlValue = url.searchParams.get('view-mode');
+
         products.forEach((element: Product) => {
-            product.render(element);
+            if (urlValue === 'small') {
+                product.renderSmallCard(element);
+            }
+
+            if (urlValue === 'big') {
+                product.renderBigCard(element);
+            }
         });
 
         const category = this.controller.getCategory(products);
@@ -54,5 +64,25 @@ export class Catalog {
 
         const slider = new SliderCard('menu');
         slider.render('jhbfjhr', { min: 123, max: 5959 });
+
+        const modeSmall = <HTMLImageElement>document.getElementById('mode_small');
+        const modeBig = <HTMLImageElement>document.getElementById('mode_big');
+
+        modeSmall.addEventListener('click', () => {
+            changeUrl('view-mode', 'small');
+        });
+
+        modeBig.addEventListener('click', () => {
+            changeUrl('view-mode', 'big');
+        });
+    }
+
+    public clear(): void {
+        const header = document.getElementsByTagName('header');
+        const main = document.getElementsByTagName('main');
+        const footer = document.getElementsByTagName('footer');
+        header[0].remove();
+        main[0].remove();
+        footer[0].remove();
     }
 }

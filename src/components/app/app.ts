@@ -4,17 +4,20 @@ import { Catalog } from '../../pages/catalog/catalog.view';
 
 export class App {
     private readonly id: string;
+    private header: HeaderView;
+    private catalog: Catalog;
+    private footer: Footer;
+
     constructor(id: string) {
         this.id = id;
+        this.header = new HeaderView(this.id);
+        this.catalog = new Catalog(this.id);
+        this.footer = new Footer(this.id);
     }
+
     public run(): void {
-        const header = new HeaderView(this.id);
-        header.render();
-
-        const pr = new Catalog(this.id);
-        pr.render();
-
-        const footer = new Footer(this.id);
-        footer.render();
+        this.header.render();
+        this.catalog.render();
+        this.footer.render();
     }
 }

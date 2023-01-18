@@ -1,5 +1,6 @@
 import { Product, ProductModel } from '../../model/product.model';
 import { Options } from '../../components/listCard/listCard.view';
+import { sortASC, sortDESC } from '../../utils/sort';
 
 export class CatalogController {
     private model: ProductModel;
@@ -50,5 +51,31 @@ export class CatalogController {
         });
 
         return options;
+    }
+
+    public sort(products: Product[], value: string): Product[] {
+        if (value === 'price-ASC') {
+            return products.sort(sortASC<Product>('price'));
+        }
+
+        if (value === 'price-DESC') {
+            return products.sort(sortDESC<Product>('price'));
+        }
+
+        if (value === 'rating-ASC') {
+            return products.sort(sortASC<Product>('rating'));
+        }
+
+        if (value === 'rating-DESC') {
+            return products.sort(sortDESC<Product>('rating'));
+        }
+
+        if (value === 'discount-ASC') {
+            return products.sort(sortASC<Product>('discountPercentage'));
+        }
+
+        if (value === 'discount-DESC') {
+            return products.sort(sortDESC<Product>('discountPercentage'));
+        }
     }
 }

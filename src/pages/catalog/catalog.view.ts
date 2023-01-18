@@ -27,13 +27,20 @@ export class Catalog {
         catalogProducts.id = 'catalogProducts';
         menu.id = 'menu';
 
-        const products = this.controller.getAll();
-
         catalog.appendChild(catalogHead);
         catalog.appendChild(catalogProducts);
         main.appendChild(menu);
         main.appendChild(catalog);
         body.appendChild(main);
+
+        let products = this.controller.getAll();
+
+        const url = window.location.href;
+        const urlValueSort = getUrlValue(url, 'sort');
+
+        if (urlValueSort) {
+            products = this.controller.sort(products, urlValueSort);
+        }
 
         const catalogHeadText = document.getElementsByClassName('catalogHead_text');
         const span = document.createElement('span');
@@ -42,11 +49,10 @@ export class Catalog {
 
         const product = new ProductCard('catalogProducts');
 
-        const url = window.location.href;
-        const urlValue = getUrlValue(url, 'view-mode');
+        const urlValueViewMode = getUrlValue(url, 'view-mode');
 
         products.forEach((element: Product) => {
-            if (urlValue === 'small') {
+            if (urlValueViewMode === 'small') {
                 product.renderSmallCard(element);
             } else {
                 product.renderBigCard(element);
@@ -74,6 +80,12 @@ export class Catalog {
         modeBig.addEventListener('click', () => {
             const url = window.location.href;
             changeUrl(url, 'view-mode', 'big');
+        });
+
+        const select = document.querySelector('select');
+        select.addEventListener('change', (event) => {
+            const url = window.location.href;
+            changeUrl(url, 'sort', event.target.value);
         });
     }
 }

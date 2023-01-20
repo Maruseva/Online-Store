@@ -46,7 +46,7 @@ export class Catalog {
         const urlValueSort = getUrlValue(url, 'sort');
         if (urlValueSort) {
             products = this.controller.sort(products, urlValueSort);
-            select.setAttribute('value', urlValueSort);
+            select.value = urlValueSort;
         }
 
         const catalogHeadText = document.getElementsByClassName('catalogHead_text');

@@ -1,5 +1,6 @@
 import { Product, ProductModel } from '../../model/product.model';
 import { Options } from '../../components/listCard/listCard.view';
+import { sortASC, sortDESC } from '../../utils/sort';
 
 export class CatalogController {
     private model: ProductModel;
@@ -50,5 +51,54 @@ export class CatalogController {
         });
 
         return options;
+    }
+
+    public sort(products: Product[], value: string): Product[] {
+        if (value === 'price-ASC') {
+            return products.sort(sortASC<Product>('price'));
+        }
+
+        if (value === 'price-DESC') {
+            return products.sort(sortDESC<Product>('price'));
+        }
+
+        if (value === 'rating-ASC') {
+            return products.sort(sortASC<Product>('rating'));
+        }
+
+        if (value === 'rating-DESC') {
+            return products.sort(sortDESC<Product>('rating'));
+        }
+
+        if (value === 'discount-ASC') {
+            return products.sort(sortASC<Product>('discountPercentage'));
+        }
+
+        if (value === 'discount-DESC') {
+            return products.sort(sortDESC<Product>('discountPercentage'));
+        }
+
+        return products;
+    }
+
+    public search(products: Product[], value: string | number): Product[] {
+        const searchProducts = products.filter((element) => {
+            if (typeof value === 'string') {
+                return (
+                    element.brand.toLowerCase().includes(value.toLowerCase()) ||
+                    element.category.toLowerCase().includes(value.toLowerCase()) ||
+                    element.description.toLowerCase().includes(value.toLowerCase()) ||
+                    element.title.toLowerCase().includes(value.toLowerCase())
+                );
+            } else {
+                return (
+                    value === element.discountPercentage ||
+                    value === element.price ||
+                    value === element.rating ||
+                    value === element.stock
+                );
+            }
+        });
+        return searchProducts;
     }
 }

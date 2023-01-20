@@ -85,10 +85,10 @@ export class CatalogController {
         const searchProducts = products.filter((element) => {
             if (typeof value === 'string') {
                 return (
-                    value.toLowerCase() === element.brand.toLowerCase() ||
-                    value.toLowerCase() === element.category.toLowerCase() ||
-                    value.toLowerCase() === element.description.toLowerCase() ||
-                    value.toLowerCase() === element.title.toLowerCase()
+                    element.brand.toLowerCase().includes(value.toLowerCase()) ||
+                    element.category.toLowerCase().includes(value.toLowerCase()) ||
+                    element.description.toLowerCase().includes(value.toLowerCase()) ||
+                    element.title.toLowerCase().includes(value.toLowerCase())
                 );
             } else {
                 return (

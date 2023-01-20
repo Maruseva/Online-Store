@@ -96,10 +96,10 @@ export class Catalog {
         });
 
         const search = <HTMLInputElement>document.getElementById('search');
+        search.value = search.value;
         search.addEventListener('change', () => {
             const url = window.location.href;
             changeUrl(url, 'search', search.value);
-            console.log(search.value);
         });
     }
 }

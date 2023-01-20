@@ -36,10 +36,17 @@ export class Catalog {
         let products = this.controller.getAll();
 
         const url = window.location.href;
-        const urlValueSort = getUrlValue(url, 'sort');
 
+        const urlValueSearch = getUrlValue(url, 'search');
+        if (urlValueSearch) {
+            products = this.controller.search(products, urlValueSearch);
+        }
+
+        const select = <HTMLSelectElement>document.getElementById('select_sort');
+        const urlValueSort = getUrlValue(url, 'sort');
         if (urlValueSort) {
             products = this.controller.sort(products, urlValueSort);
+            select.setAttribute('value', urlValueSort);
         }
 
         const catalogHeadText = document.getElementsByClassName('catalogHead_text');
@@ -82,10 +89,17 @@ export class Catalog {
             changeUrl(url, 'view-mode', 'big');
         });
 
-        const select = document.querySelector('select');
         select.addEventListener('change', (event) => {
             const url = window.location.href;
-            changeUrl(url, 'sort', event.target.value);
+            const value = (event.target as HTMLSelectElement).value;
+            changeUrl(url, 'sort', value);
+        });
+
+        const search = <HTMLInputElement>document.getElementById('search');
+        search.addEventListener('change', () => {
+            const url = window.location.href;
+            changeUrl(url, 'search', search.value);
+            console.log(search.value);
         });
     }
 }

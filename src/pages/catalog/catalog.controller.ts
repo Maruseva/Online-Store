@@ -77,5 +77,28 @@ export class CatalogController {
         if (value === 'discount-DESC') {
             return products.sort(sortDESC<Product>('discountPercentage'));
         }
+
+        return products;
+    }
+
+    public search(products: Product[], value: string | number): Product[] {
+        const searchProducts = products.filter((element) => {
+            if (typeof value === 'string') {
+                return (
+                    value.toLowerCase() === element.brand.toLowerCase() ||
+                    value.toLowerCase() === element.category.toLowerCase() ||
+                    value.toLowerCase() === element.description.toLowerCase() ||
+                    value.toLowerCase() === element.title.toLowerCase()
+                );
+            } else {
+                return (
+                    value === element.discountPercentage ||
+                    value === element.price ||
+                    value === element.rating ||
+                    value === element.stock
+                );
+            }
+        });
+        return searchProducts;
     }
 }

@@ -18,8 +18,6 @@ export class App {
     public run(): void {
         this.header.render();
         this.catalog.render();
-        this.catalog.renderFilters();
-        this.catalog.renderCatalog();
         this.footer.render();
     }
 }

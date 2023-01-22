@@ -32,6 +32,35 @@ export class Catalog {
         main.appendChild(menu);
         main.appendChild(catalog);
         body.appendChild(main);
+
+        const modeSmall = <HTMLImageElement>document.getElementById('mode_small');
+        const modeBig = <HTMLImageElement>document.getElementById('mode_big');
+
+        modeSmall.addEventListener('click', () => {
+            const url = window.location.href;
+            changeUrl(url, 'view-mode', 'small');
+        });
+
+        modeBig.addEventListener('click', () => {
+            const url = window.location.href;
+            changeUrl(url, 'view-mode', 'big');
+        });
+
+        const select = <HTMLSelectElement>document.getElementById('select_sort');
+        select.addEventListener('change', (event) => {
+            const url = window.location.href;
+            const value = (event.target as HTMLSelectElement).value;
+            changeUrl(url, 'sort', value);
+        });
+
+        const search = <HTMLInputElement>document.getElementById('search');
+        search.addEventListener('input', () => {
+            const url = window.location.href;
+            changeUrl(url, 'search', search.value);
+        });
+
+        this.renderFilters();
+        this.renderCatalog();
     }
 
     public renderFilters(): void {
@@ -57,11 +86,9 @@ export class Catalog {
             products = this.controller.search(products, urlValueSearch);
         }
 
-        const select = <HTMLSelectElement>document.getElementById('select_sort');
         const urlValueSort = getUrlValue(url, 'sort');
         if (urlValueSort) {
             products = this.controller.sort(products, urlValueSort);
-            select.value = urlValueSort;
         }
 
         const product = new ProductCard('catalogProducts');
@@ -77,31 +104,6 @@ export class Catalog {
 
         const catalogHeadText = document.getElementsByClassName('catalogHead_text');
         catalogHeadText[0].innerHTML = `<span>Found: ${products.length}</span>`;
-
-        const modeSmall = <HTMLImageElement>document.getElementById('mode_small');
-        const modeBig = <HTMLImageElement>document.getElementById('mode_big');
-
-        modeSmall.addEventListener('click', () => {
-            const url = window.location.href;
-            changeUrl(url, 'view-mode', 'small');
-        });
-
-        modeBig.addEventListener('click', () => {
-            const url = window.location.href;
-            changeUrl(url, 'view-mode', 'big');
-        });
-
-        select.addEventListener('change', (event) => {
-            const url = window.location.href;
-            const value = (event.target as HTMLSelectElement).value;
-            changeUrl(url, 'sort', value);
-        });
-
-        const search = <HTMLInputElement>document.getElementById('search');
-        search.addEventListener('input', () => {
-            const url = window.location.href;
-            changeUrl(url, 'search', search.value);
-        });
     }
 
     public clearCatalog(): void {

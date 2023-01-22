@@ -33,49 +33,6 @@ export class Catalog {
         main.appendChild(catalog);
         body.appendChild(main);
 
-        let products = this.controller.getAll();
-
-        const url = window.location.href;
-
-        const urlValueSearch = getUrlValue(url, 'search');
-        if (urlValueSearch) {
-            products = this.controller.search(products, urlValueSearch);
-        }
-
-        const select = <HTMLSelectElement>document.getElementById('select_sort');
-        const urlValueSort = getUrlValue(url, 'sort');
-        if (urlValueSort) {
-            products = this.controller.sort(products, urlValueSort);
-            select.value = urlValueSort;
-        }
-
-        const catalogHeadText = document.getElementsByClassName('catalogHead_text');
-        const span = document.createElement('span');
-        span.innerText = `Found: ${products.length}`;
-        catalogHeadText[0].appendChild(span);
-
-        const product = new ProductCard('catalogProducts');
-
-        const urlValueViewMode = getUrlValue(url, 'view-mode');
-
-        products.forEach((element: Product) => {
-            if (urlValueViewMode === 'small') {
-                product.renderSmallCard(element);
-            } else {
-                product.renderBigCard(element);
-            }
-        });
-
-        const category = this.controller.getCategory(products);
-        const brand = this.controller.getBrand(products);
-
-        const list = new ListCard('menu');
-        list.render('Category', category);
-        list.render('Brand', brand);
-
-        const slider = new SliderCard('menu');
-        slider.render('jhbfjhr', { min: 123, max: 5959 });
-
         const modeSmall = <HTMLImageElement>document.getElementById('mode_small');
         const modeBig = <HTMLImageElement>document.getElementById('mode_big');
 
@@ -89,6 +46,7 @@ export class Catalog {
             changeUrl(url, 'view-mode', 'big');
         });
 
+        const select = <HTMLSelectElement>document.getElementById('select_sort');
         select.addEventListener('change', (event) => {
             const url = window.location.href;
             const value = (event.target as HTMLSelectElement).value;
@@ -96,10 +54,60 @@ export class Catalog {
         });
 
         const search = <HTMLInputElement>document.getElementById('search');
-        search.value = search.value;
-        search.addEventListener('change', () => {
+        search.addEventListener('input', () => {
             const url = window.location.href;
             changeUrl(url, 'search', search.value);
         });
+
+        this.renderFilters();
+        this.renderCatalog();
+    }
+
+    public renderFilters(): void {
+        const products = this.controller.getAll();
+
+        const category = this.controller.getCategory(products);
+        const brand = this.controller.getBrand(products);
+
+        const list = new ListCard('menu');
+        list.render('Category', category);
+        list.render('Brand', brand);
+
+        const slider = new SliderCard('menu');
+        slider.render('jhbfjhr', { min: 123, max: 5959 });
+    }
+
+    public renderCatalog(): void {
+        let products = this.controller.getAll();
+        const url = window.location.href;
+
+        const urlValueSearch = getUrlValue(url, 'search');
+        if (urlValueSearch) {
+            products = this.controller.search(products, urlValueSearch);
+        }
+
+        const urlValueSort = getUrlValue(url, 'sort');
+        if (urlValueSort) {
+            products = this.controller.sort(products, urlValueSort);
+        }
+
+        const product = new ProductCard('catalogProducts');
+        const urlValueViewMode = getUrlValue(url, 'view-mode');
+
+        products.forEach((element: Product) => {
+            if (urlValueViewMode === 'small') {
+                product.renderSmallCard(element);
+            } else {
+                product.renderBigCard(element);
+            }
+        });
+
+        const catalogHeadText = document.getElementsByClassName('catalogHead_text');
+        catalogHeadText[0].innerHTML = `<span>Found: ${products.length}</span>`;
+    }
+
+    public clearCatalog(): void {
+        const catalogProducts = <HTMLDivElement>document.getElementById('catalogProducts');
+        catalogProducts.innerHTML = '';
     }
 }

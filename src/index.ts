@@ -4,6 +4,5 @@ const app = new App('root');
 app.run();
 
 window.addEventListener('pushstate', () => {
-    app.clear();
     app.run();
 });

@@ -32,8 +32,10 @@ export class Catalog {
         main.appendChild(menu);
         main.appendChild(catalog);
         body.appendChild(main);
+    }
 
-        let products = this.controller.getAll();
+    public renderFilters(): void {
+        const products = this.controller.getAll();
 
         const category = this.controller.getCategory(products);
         const brand = this.controller.getBrand(products);
@@ -44,7 +46,10 @@ export class Catalog {
 
         const slider = new SliderCard('menu');
         slider.render('jhbfjhr', { min: 123, max: 5959 });
+    }
 
+    public renderCatalog(): void {
+        let products = this.controller.getAll();
         const url = window.location.href;
 
         const urlValueSearch = getUrlValue(url, 'search');
@@ -58,6 +63,17 @@ export class Catalog {
             products = this.controller.sort(products, urlValueSort);
             select.value = urlValueSort;
         }
+
+        const product = new ProductCard('catalogProducts');
+        const urlValueViewMode = getUrlValue(url, 'view-mode');
+
+        products.forEach((element: Product) => {
+            if (urlValueViewMode === 'small') {
+                product.renderSmallCard(element);
+            } else {
+                product.renderBigCard(element);
+            }
+        });
 
         const catalogHeadText = document.getElementsByClassName('catalogHead_text');
         catalogHeadText[0].innerHTML = `<span>Found: ${products.length}</span>`;
@@ -85,23 +101,6 @@ export class Catalog {
         search.addEventListener('input', () => {
             const url = window.location.href;
             changeUrl(url, 'search', search.value);
-        });
-
-        this.clearCatalog();
-        this.renderCatalog(products);
-    }
-
-    public renderCatalog(products: Product[]): void {
-        const url = window.location.href;
-        const product = new ProductCard('catalogProducts');
-        const urlValueViewMode = getUrlValue(url, 'view-mode');
-
-        products.forEach((element: Product) => {
-            if (urlValueViewMode === 'small') {
-                product.renderSmallCard(element);
-            } else {
-                product.renderBigCard(element);
-            }
         });
     }
 

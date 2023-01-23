@@ -101,4 +101,8 @@ export class CatalogController {
         });
         return searchProducts;
     }
+
+    public filter(products: Product[], name: 'brand' | 'category', values: string[]): Product[] {
+        return products.filter((element) => values.includes(element[name]));
+    }
 }

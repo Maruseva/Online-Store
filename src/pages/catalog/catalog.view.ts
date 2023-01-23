@@ -118,7 +118,8 @@ export class Catalog {
         const urlValuesCategory = getAllParams(url, 'category');
         if (urlValuesCategory && urlValuesCategory.length > 0) {
             urlValuesCategory.forEach((element) => {
-                const input = <HTMLInputElement>document.getElementById(element);
+                const category = <HTMLDivElement>document.getElementById('category');
+                const input = <HTMLInputElement>category.querySelector(`input[value="${element}"]`);
                 input.checked = true;
             });
             products = this.controller.filter(products, 'category', urlValuesCategory);
@@ -127,7 +128,8 @@ export class Catalog {
         const urlValuesBrand = getAllParams(url, 'brand');
         if (urlValuesBrand && urlValuesBrand.length > 0) {
             urlValuesBrand.forEach((element) => {
-                const input = <HTMLInputElement>document.getElementById(element);
+                const brand = <HTMLDivElement>document.getElementById('brand');
+                const input = <HTMLInputElement>brand.querySelector(`input[value="${element}"]`);
                 input.checked = true;
             });
             products = this.controller.filter(products, 'brand', urlValuesBrand);

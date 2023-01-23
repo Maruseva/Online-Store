@@ -74,7 +74,7 @@ export class Catalog {
         list.render('Brand', brand);
 
         const slider = new SliderCard('menu');
-        slider.render('jhbfjhr', { min: 123, max: 5959 });
+        slider.render('Price', { min: 123, max: 5959 });
     }
 
     public renderCatalog(): void {

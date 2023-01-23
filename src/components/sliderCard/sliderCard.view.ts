@@ -17,8 +17,8 @@ export class SliderCard extends Card {
         </div>
         <div class="range_container">
     <div class="sliders_control">
-       <input id="fromSlider" type="range" min="${min}" max="${max}"/>
-       <input id="toSlider" type="range" min="${min}" max="${max}"/>
+       <input id="fromSlider" type="range" min="${min}" max="${max}" value="${min}"/>
+       <input id="toSlider" type="range" min="${min}" max="${max}" value="${max}"/>
     </div>
 </div>
         </div>`;

@@ -68,13 +68,28 @@ export class Catalog {
 
         const category = this.controller.getCategory(products);
         const brand = this.controller.getBrand(products);
+        const price = this.controller.sort(products, 'price-ASC');
+        const stock = this.controller.sort(products, 'stock-ASC');
 
         const list = new ListCard('menu');
         list.render('Category', category);
         list.render('Brand', brand);
 
         const slider = new SliderCard('menu');
-        slider.render('Price', { min: 123, max: 5959 });
+        slider.render('Price', { min: price[0].price, max: price[price.length - 1].price });
+        slider.render('Stock', { min: stock[0].stock, max: stock[stock.length - 1].stock });
+
+        const inputPriceMin = document.getElementsByClassName('price_min');
+        inputPriceMin[0].addEventListener('input', (event) => {
+            const text = <HTMLSpanElement>document.getElementById('price_text_min');
+            text.innerText = (event.target as HTMLInputElement).value;
+        });
+
+        const inputPriceMax = document.getElementsByClassName('price_max');
+        inputPriceMax[0].addEventListener('input', (event) => {
+            const text = <HTMLSpanElement>document.getElementById('price_text_max');
+            text.innerText = (event.target as HTMLInputElement).value;
+        });
     }
 
     public renderCatalog(): void {

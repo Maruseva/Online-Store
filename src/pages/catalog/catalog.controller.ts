@@ -78,6 +78,10 @@ export class CatalogController {
             return products.sort(sortDESC<Product>('discountPercentage'));
         }
 
+        if (value === 'stock-ASC') {
+            return products.sort(sortASC<Product>('stock'));
+        }
+
         return products;
     }
 
@@ -100,5 +104,11 @@ export class CatalogController {
             }
         });
         return searchProducts;
+    }
+
+    public slider(products: Product[], name: keyof Product, values: number[]): Product[] {
+        return products.filter((element) => {
+            return element[name] > values[0] && element[name] < values[0];
+        });
     }
 }

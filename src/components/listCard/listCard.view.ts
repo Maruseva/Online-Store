@@ -14,7 +14,7 @@ export class ListCard extends Card {
         options.forEach((element) => {
             content += `<div class="options">
             <label>
-            <input type="checkbox" name=${title} value=${element.category}>
+            <input type="checkbox" name=${title} value=${element.category} id=${element.category}>
             ${element.category}
             </label>
             <span>(${element.displayQuantity}/${element.totalQuantity})</span>

@@ -5,7 +5,7 @@ import { ListCard } from '../../components/listCard/listCard.view';
 import template from './catalog.template.html';
 import './catalog.style.css';
 import { SliderCard } from '../../components/sliderCard/sliderCard.view';
-import { changeUrl, getUrlValue } from '../../utils/url';
+import { changeUrl, deleteParamsUrl, getAllParams, getUrlValue, setParamsUrl } from '../../utils/url';
 
 export class Catalog {
     private readonly id: string;
@@ -75,6 +75,26 @@ export class Catalog {
 
         const slider = new SliderCard('menu');
         slider.render('jhbfjhr', { min: 123, max: 5959 });
+
+        const options = document.getElementsByClassName('options_wrap');
+
+        options[0].addEventListener('change', (event) => {
+            const url = window.location.href;
+            if ((event.target as HTMLInputElement).checked) {
+                setParamsUrl(url, 'category', (event.target as HTMLInputElement).value);
+            } else {
+                deleteParamsUrl(url, 'category', (event.target as HTMLInputElement).value);
+            }
+        });
+
+        options[1].addEventListener('change', (event) => {
+            const url = window.location.href;
+            if ((event.target as HTMLInputElement).checked) {
+                setParamsUrl(url, 'brand', (event.target as HTMLInputElement).value);
+            } else {
+                deleteParamsUrl(url, 'brand', (event.target as HTMLInputElement).value);
+            }
+        });
     }
 
     public renderCatalog(): void {
@@ -83,12 +103,34 @@ export class Catalog {
 
         const urlValueSearch = getUrlValue(url, 'search');
         if (urlValueSearch) {
+            const search = <HTMLInputElement>document.getElementById('search');
+            search.value = urlValueSearch;
             products = this.controller.search(products, urlValueSearch);
         }
 
         const urlValueSort = getUrlValue(url, 'sort');
         if (urlValueSort) {
+            const select = <HTMLSelectElement>document.getElementById('select_sort');
+            select.value = urlValueSort;
             products = this.controller.sort(products, urlValueSort);
+        }
+
+        const urlValuesCategory = getAllParams(url, 'category');
+        if (urlValuesCategory && urlValuesCategory.length > 0) {
+            urlValuesCategory.forEach((element) => {
+                const input = <HTMLInputElement>document.getElementById(element);
+                input.checked = true;
+            });
+            products = this.controller.filter(products, 'category', urlValuesCategory);
+        }
+
+        const urlValuesBrand = getAllParams(url, 'brand');
+        if (urlValuesBrand && urlValuesBrand.length > 0) {
+            urlValuesBrand.forEach((element) => {
+                const input = <HTMLInputElement>document.getElementById(element);
+                input.checked = true;
+            });
+            products = this.controller.filter(products, 'brand', urlValuesBrand);
         }
 
         const product = new ProductCard('catalogProducts');

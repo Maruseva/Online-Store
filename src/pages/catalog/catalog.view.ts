@@ -76,9 +76,8 @@ export class Catalog {
         const slider = new SliderCard('menu');
         slider.render('jhbfjhr', { min: 123, max: 5959 });
 
-        const options = document.getElementsByClassName('options_wrap');
-
-        options[0].addEventListener('change', (event) => {
+        const filterCategory = <HTMLDivElement>document.getElementById('category');
+        filterCategory.addEventListener('change', (event) => {
             const url = window.location.href;
             if ((event.target as HTMLInputElement).checked) {
                 setParamsUrl(url, 'category', (event.target as HTMLInputElement).value);
@@ -87,7 +86,8 @@ export class Catalog {
             }
         });
 
-        options[1].addEventListener('change', (event) => {
+        const filterBrand = <HTMLDivElement>document.getElementById('brand');
+        filterBrand.addEventListener('change', (event) => {
             const url = window.location.href;
             if ((event.target as HTMLInputElement).checked) {
                 setParamsUrl(url, 'brand', (event.target as HTMLInputElement).value);

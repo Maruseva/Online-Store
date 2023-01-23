@@ -9,7 +9,7 @@ export interface Options {
 
 export class ListCard extends Card {
     public render(title: string, options: Options[]): void {
-        let content: string = '<div class="options_wrap">';
+        let content: string = `<div class="options_wrap" id=${title.toLowerCase()}>`;
 
         options.forEach((element) => {
             content += `<div class="options">

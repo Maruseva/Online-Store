@@ -106,6 +106,10 @@ export class CatalogController {
         return searchProducts;
     }
 
+    public filter(products: Product[], name: 'brand' | 'category', values: string[]): Product[] {
+        return products.filter((element) => values.includes(element[name]));
+    }
+
     public slider(products: Product[], name: keyof Product, values: number[]): Product[] {
         return products.filter((element) => {
             return element[name] > values[0] && element[name] < values[0];

@@ -9,12 +9,12 @@ export interface Options {
 
 export class ListCard extends Card {
     public render(title: string, options: Options[]): void {
-        let content: string = '<div class="options_wrap">';
+        let content: string = `<div class="options_wrap" id=${title.toLowerCase()}>`;
 
         options.forEach((element) => {
             content += `<div class="options">
             <label>
-            <input type="checkbox" name=${title} value=${element.category}>
+            <input type="checkbox" name="${title}" value="${element.category}">
             ${element.category}
             </label>
             <span>(${element.displayQuantity}/${element.totalQuantity})</span>

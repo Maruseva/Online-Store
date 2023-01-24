@@ -5,7 +5,7 @@ export function changeUrl(url: string, name: string, value: string): void {
     window.dispatchEvent(new Event('pushstate'));
 }
 
-export function getUrlValue(url: string, name: string): string | null {
+export function getUrlValue(url: string, name: string): string | number | null {
     const urlNew = new URL(url);
     return urlNew.searchParams.get(name);
 }

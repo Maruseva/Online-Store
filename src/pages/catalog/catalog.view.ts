@@ -68,8 +68,6 @@ export class Catalog {
 
         const category = this.controller.getCategory(products);
         const brand = this.controller.getBrand(products);
-        const price = this.controller.sort(products, 'price-ASC');
-        const stock = this.controller.sort(products, 'stock-ASC');
 
         const list = new ListCard('menu');
         list.render('Category', category);
@@ -95,21 +93,54 @@ export class Catalog {
             }
         });
 
-        const slider = new SliderCard('menu');
+        const price = products.map((element) => element.price);
+        const minPrice = Math.min(...price);
+        const maxPrice = Math.max(...price);
 
-        slider.render('Price', { min: price[0].price, max: price[price.length - 1].price });
-        slider.render('Stock', { min: stock[0].stock, max: stock[stock.length - 1].stock });
+        const stock = products.map((element) => element.stock);
+        const minStock = Math.min(...stock);
+        const maxStock = Math.max(...stock);
+
+        const slider = new SliderCard('menu');
+        slider.render('Price', { min: minPrice, max: maxPrice });
+        slider.render('Stock', { min: minStock, max: maxStock });
 
         const inputPriceMin = document.getElementsByClassName('price_min');
         inputPriceMin[0].addEventListener('input', (event) => {
+            const target = event.target as HTMLInputElement;
+            console.log(target.nextElementSibling.value);
+            if (event.target.value > target.nextElementSibling.value) {
+                event.target.value = target.nextElementSibling.value;
+            }
+            console.log(inputPriceMin[0].value);
             const text = <HTMLSpanElement>document.getElementById('price_text_min');
             text.innerText = (event.target as HTMLInputElement).value;
+            const url = window.location.href;
+            changeUrl(url, 'price-min', (event.target as HTMLInputElement).value);
         });
 
         const inputPriceMax = document.getElementsByClassName('price_max');
         inputPriceMax[0].addEventListener('input', (event) => {
             const text = <HTMLSpanElement>document.getElementById('price_text_max');
             text.innerText = (event.target as HTMLInputElement).value;
+            const url = window.location.href;
+            changeUrl(url, 'price-max', (event.target as HTMLInputElement).value);
+        });
+
+        const inputStockMin = document.getElementsByClassName('stock_min');
+        inputStockMin[0].addEventListener('input', (event) => {
+            const text = <HTMLSpanElement>document.getElementById('stock_text_min');
+            text.innerText = (event.target as HTMLInputElement).value;
+            const url = window.location.href;
+            changeUrl(url, 'stock-min', (event.target as HTMLInputElement).value);
+        });
+
+        const inputStockMax = document.getElementsByClassName('stock_max');
+        inputStockMax[0].addEventListener('input', (event) => {
+            const text = <HTMLSpanElement>document.getElementById('stock_text_max');
+            text.innerText = (event.target as HTMLInputElement).value;
+            const url = window.location.href;
+            changeUrl(url, 'stock-max', (event.target as HTMLInputElement).value);
         });
     }
 
@@ -149,6 +180,34 @@ export class Catalog {
                 input.checked = true;
             });
             products = this.controller.filter(products, 'brand', urlValuesBrand);
+        }
+
+        const urlValuePriceMin = getUrlValue(url, 'price-min');
+        const urlValuePriceMax = getUrlValue(url, 'price-max');
+
+        const inputPriceMin = document.getElementsByClassName('price_min');
+        const inputPriceMax = document.getElementsByClassName('price_max');
+        const textMin = <HTMLSpanElement>document.getElementById('price_text_min');
+        const textMax = <HTMLSpanElement>document.getElementById('price_text_max');
+
+        if (urlValuePriceMin) {
+            inputPriceMin[0].value = urlValuePriceMin;
+            textMin.innerHTML = urlValuePriceMin;
+            products = this.controller.slider(products, 'price', { min: urlValuePriceMin });
+        }
+        if (urlValuePriceMax) {
+            inputPriceMax[0].value = urlValuePriceMax;
+            textMax.innerHTML = urlValuePriceMax;
+            products = this.controller.slider(products, 'price', { max: urlValuePriceMax });
+        }
+        if (!urlValuePriceMin && !urlValuePriceMax && products.length) {
+            const price = products.map((element) => element.price);
+            const minPrice = Math.min(...price);
+            const maxPrice = Math.max(...price);
+            inputPriceMin[0].value = minPrice;
+            textMin.innerHTML = minPrice;
+            inputPriceMax[0].value = maxPrice;
+            textMax.innerHTML = maxPrice;
         }
 
         const product = new ProductCard('catalogProducts');

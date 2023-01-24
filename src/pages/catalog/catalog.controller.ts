@@ -2,6 +2,11 @@ import { Product, ProductModel } from '../../model/product.model';
 import { Options } from '../../components/listCard/listCard.view';
 import { sortASC, sortDESC } from '../../utils/sort';
 
+export interface Range {
+    min?: number;
+    max?: number;
+}
+
 export class CatalogController {
     private model: ProductModel;
     constructor() {
@@ -110,9 +115,17 @@ export class CatalogController {
         return products.filter((element) => values.includes(element[name]));
     }
 
-    public slider(products: Product[], name: keyof Product, values: number[]): Product[] {
-        return products.filter((element) => {
-            return element[name] > values[0] && element[name] < values[0];
-        });
+    public slider(products: Product[], name: keyof Product, values: Range): Product[] {
+        if (values.min) {
+            return products.filter((element) => {
+                return element[name] > values.min;
+            });
+        }
+        if (values.max) {
+            return products.filter((element) => {
+                return element[name] < values.max;
+            });
+        }
+        return products;
     }
 }

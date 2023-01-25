@@ -6,6 +6,7 @@ import template from './catalog.template.html';
 import './catalog.style.css';
 import { SliderCard } from '../../components/sliderCard/sliderCard.view';
 import { changeUrl, deleteParamsUrl, getAllParams, getUrlValue, setParamsUrl } from '../../utils/url';
+import { getMax, getMin } from '../../utils/sort';
 
 export class Catalog {
     private readonly id: string;
@@ -93,13 +94,11 @@ export class Catalog {
             }
         });
 
-        const price = products.map((element) => element.price);
-        const minPrice = Math.min(...price);
-        const maxPrice = Math.max(...price);
+        const minPrice = getMin(products, 'price');
+        const maxPrice = getMax(products, 'price');
 
-        const stock = products.map((element) => element.stock);
-        const minStock = Math.min(...stock);
-        const maxStock = Math.max(...stock);
+        const minStock = getMin(products, 'stock');
+        const maxStock = getMax(products, 'stock');
 
         const slider = new SliderCard('menu');
         slider.render('Price', { min: minPrice, max: maxPrice });
@@ -108,39 +107,53 @@ export class Catalog {
         const inputPriceMin = document.getElementsByClassName('price_min');
         inputPriceMin[0].addEventListener('input', (event) => {
             const target = event.target as HTMLInputElement;
-            console.log(target.nextElementSibling.value);
-            if (event.target.value > target.nextElementSibling.value) {
-                event.target.value = target.nextElementSibling.value;
+            const targetNext = target.nextElementSibling as HTMLInputElement;
+            if (parseInt(target.value) > parseInt(targetNext.value)) {
+                target.value = targetNext.value;
             }
-            console.log(inputPriceMin[0].value);
             const text = <HTMLSpanElement>document.getElementById('price_text_min');
-            text.innerText = (event.target as HTMLInputElement).value;
+            text.innerText = target.value;
             const url = window.location.href;
-            changeUrl(url, 'price-min', (event.target as HTMLInputElement).value);
+            changeUrl(url, 'price-min', target.value);
         });
 
         const inputPriceMax = document.getElementsByClassName('price_max');
         inputPriceMax[0].addEventListener('input', (event) => {
+            const target = event.target as HTMLInputElement;
+            const targetPrevious = target.previousElementSibling as HTMLInputElement;
+            if (parseInt(target.value) < parseInt(targetPrevious.value)) {
+                target.value = targetPrevious.value;
+            }
             const text = <HTMLSpanElement>document.getElementById('price_text_max');
-            text.innerText = (event.target as HTMLInputElement).value;
+            text.innerText = target.value;
             const url = window.location.href;
-            changeUrl(url, 'price-max', (event.target as HTMLInputElement).value);
+            changeUrl(url, 'price-max', target.value);
         });
 
         const inputStockMin = document.getElementsByClassName('stock_min');
         inputStockMin[0].addEventListener('input', (event) => {
+            const target = event.target as HTMLInputElement;
+            const targetNext = target.nextElementSibling as HTMLInputElement;
+            if (parseInt(target.value) > parseInt(targetNext.value)) {
+                target.value = targetNext.value;
+            }
             const text = <HTMLSpanElement>document.getElementById('stock_text_min');
-            text.innerText = (event.target as HTMLInputElement).value;
+            text.innerText = target.value;
             const url = window.location.href;
-            changeUrl(url, 'stock-min', (event.target as HTMLInputElement).value);
+            changeUrl(url, 'stock-min', target.value);
         });
 
         const inputStockMax = document.getElementsByClassName('stock_max');
         inputStockMax[0].addEventListener('input', (event) => {
+            const target = event.target as HTMLInputElement;
+            const targetPrevious = target.previousElementSibling as HTMLInputElement;
+            if (parseInt(target.value) < parseInt(targetPrevious.value)) {
+                target.value = targetPrevious.value;
+            }
             const text = <HTMLSpanElement>document.getElementById('stock_text_max');
-            text.innerText = (event.target as HTMLInputElement).value;
+            text.innerText = target.value;
             const url = window.location.href;
-            changeUrl(url, 'stock-max', (event.target as HTMLInputElement).value);
+            changeUrl(url, 'stock-max', target.value);
         });
     }
 
@@ -191,23 +204,49 @@ export class Catalog {
         const textMax = <HTMLSpanElement>document.getElementById('price_text_max');
 
         if (urlValuePriceMin) {
-            inputPriceMin[0].value = urlValuePriceMin;
+            (inputPriceMin[0] as HTMLInputElement).value = urlValuePriceMin;
             textMin.innerHTML = urlValuePriceMin;
-            products = this.controller.slider(products, 'price', { min: urlValuePriceMin });
+            products = this.controller.slider(products, 'price', { min: parseInt(urlValuePriceMin) });
         }
         if (urlValuePriceMax) {
-            inputPriceMax[0].value = urlValuePriceMax;
+            (inputPriceMax[0] as HTMLInputElement).value = urlValuePriceMax;
             textMax.innerHTML = urlValuePriceMax;
-            products = this.controller.slider(products, 'price', { max: urlValuePriceMax });
+            products = this.controller.slider(products, 'price', { max: parseInt(urlValuePriceMax) });
         }
         if (!urlValuePriceMin && !urlValuePriceMax && products.length) {
-            const price = products.map((element) => element.price);
-            const minPrice = Math.min(...price);
-            const maxPrice = Math.max(...price);
-            inputPriceMin[0].value = minPrice;
+            const minPrice = getMin(products, 'price').toString();
+            const maxPrice = getMax(products, 'price').toString();
+            (inputPriceMin[0] as HTMLInputElement).value = minPrice;
             textMin.innerHTML = minPrice;
-            inputPriceMax[0].value = maxPrice;
+            (inputPriceMax[0] as HTMLInputElement).value = maxPrice;
             textMax.innerHTML = maxPrice;
+        }
+
+        const urlValueStockMin = getUrlValue(url, 'stock-min');
+        const urlValueStockMax = getUrlValue(url, 'stock-max');
+
+        const inputStockMin = document.getElementsByClassName('stock_min');
+        const inputStockMax = document.getElementsByClassName('stock_max');
+        const textMinStock = <HTMLSpanElement>document.getElementById('stock_text_min');
+        const textMaxStock = <HTMLSpanElement>document.getElementById('stock_text_max');
+
+        if (urlValueStockMin) {
+            (inputStockMin[0] as HTMLInputElement).value = urlValueStockMin;
+            textMinStock.innerHTML = urlValueStockMin;
+            products = this.controller.slider(products, 'stock', { min: parseInt(urlValueStockMin) });
+        }
+        if (urlValueStockMax) {
+            (inputStockMax[0] as HTMLInputElement).value = urlValueStockMax;
+            textMaxStock.innerHTML = urlValueStockMax;
+            products = this.controller.slider(products, 'stock', { max: parseInt(urlValueStockMax) });
+        }
+        if (!urlValueStockMin && !urlValueStockMax && products.length) {
+            const minStock = getMin(products, 'stock').toString();
+            const maxStock = getMax(products, 'stock').toString();
+            (inputStockMin[0] as HTMLInputElement).value = minStock;
+            textMinStock.innerHTML = minStock;
+            (inputStockMax[0] as HTMLInputElement).value = maxStock;
+            textMaxStock.innerHTML = maxStock;
         }
 
         const product = new ProductCard('catalogProducts');

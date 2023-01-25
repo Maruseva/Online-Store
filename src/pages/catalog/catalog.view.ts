@@ -130,17 +130,17 @@ export class Catalog {
             changeUrl(url, `${name}-max`, target.value);
         }
 
-        const inputPriceMin = document.querySelector('input[class=price_min]');
-        (inputPriceMin as HTMLInputElement).addEventListener('input', (event) => handlerInputMin(event, 'price'));
+        const inputPriceMin = <HTMLInputElement>document.querySelector('input[class=price_min]');
+        inputPriceMin.addEventListener('input', (event) => handlerInputMin(event, 'price'));
 
-        const inputPriceMax = document.querySelector('input[class=price_max]');
-        (inputPriceMax as HTMLInputElement).addEventListener('input', (event) => handlerInputMax(event, 'price'));
+        const inputPriceMax = <HTMLInputElement>document.querySelector('input[class=price_max]');
+        inputPriceMax.addEventListener('input', (event) => handlerInputMax(event, 'price'));
 
-        const inputStockMin = document.querySelector('input[class=stock_min]');
-        (inputStockMin as HTMLInputElement).addEventListener('input', (event) => handlerInputMin(event, 'stock'));
+        const inputStockMin = <HTMLInputElement>document.querySelector('input[class=stock_min]');
+        inputStockMin.addEventListener('input', (event) => handlerInputMin(event, 'stock'));
 
-        const inputStockMax = document.querySelector('input[class=stock_max]');
-        (inputStockMax as HTMLInputElement).addEventListener('input', (event) => handlerInputMax(event, 'stock'));
+        const inputStockMax = <HTMLInputElement>document.querySelector('input[class=stock_max]');
+        inputStockMax.addEventListener('input', (event) => handlerInputMax(event, 'stock'));
     }
 
     public renderCatalog(): void {
@@ -184,18 +184,18 @@ export class Catalog {
         const urlValuePriceMin = getUrlValue(url, 'price-min');
         const urlValuePriceMax = getUrlValue(url, 'price-max');
 
-        const inputPriceMin = document.querySelector('input[class=price_min]');
-        const inputPriceMax = document.querySelector('input[class=price_max]');
+        const inputPriceMin = <HTMLInputElement>document.querySelector('input[class=price_min]');
+        const inputPriceMax = <HTMLInputElement>document.querySelector('input[class=price_max]');
         const textMin = <HTMLSpanElement>document.getElementById('price_text_min');
         const textMax = <HTMLSpanElement>document.getElementById('price_text_max');
 
         if (urlValuePriceMin) {
-            (inputPriceMin as HTMLInputElement).value = urlValuePriceMin;
+            inputPriceMin.value = urlValuePriceMin;
             textMin.innerHTML = urlValuePriceMin;
             products = this.controller.slider(products, 'price', { min: parseInt(urlValuePriceMin) });
         }
         if (urlValuePriceMax) {
-            (inputPriceMax as HTMLInputElement).value = urlValuePriceMax;
+            inputPriceMax.value = urlValuePriceMax;
             textMax.innerHTML = urlValuePriceMax;
             products = this.controller.slider(products, 'price', { max: parseInt(urlValuePriceMax) });
         }
@@ -204,27 +204,27 @@ export class Catalog {
             const price = getMinMax(priceAll);
             const minPrice = price.min.toString();
             const maxPrice = price.max.toString();
-            (inputPriceMin as HTMLInputElement).value = minPrice;
+            inputPriceMin.value = minPrice;
             textMin.innerHTML = minPrice;
-            (inputPriceMax as HTMLInputElement).value = maxPrice;
+            inputPriceMax.value = maxPrice;
             textMax.innerHTML = maxPrice;
         }
 
         const urlValueStockMin = getUrlValue(url, 'stock-min');
         const urlValueStockMax = getUrlValue(url, 'stock-max');
 
-        const inputStockMin = document.querySelector('input[class=stock_min]');
-        const inputStockMax = document.querySelector('input[class=stock_max]');
+        const inputStockMin = <HTMLInputElement>document.querySelector('input[class=stock_min]');
+        const inputStockMax = <HTMLInputElement>document.querySelector('input[class=stock_max]');
         const textMinStock = <HTMLSpanElement>document.getElementById('stock_text_min');
         const textMaxStock = <HTMLSpanElement>document.getElementById('stock_text_max');
 
         if (urlValueStockMin) {
-            (inputStockMin as HTMLInputElement).value = urlValueStockMin;
+            inputStockMin.value = urlValueStockMin;
             textMinStock.innerHTML = urlValueStockMin;
             products = this.controller.slider(products, 'stock', { min: parseInt(urlValueStockMin) });
         }
         if (urlValueStockMax) {
-            (inputStockMax as HTMLInputElement).value = urlValueStockMax;
+            inputStockMax.value = urlValueStockMax;
             textMaxStock.innerHTML = urlValueStockMax;
             products = this.controller.slider(products, 'stock', { max: parseInt(urlValueStockMax) });
         }
@@ -233,9 +233,9 @@ export class Catalog {
             const stock = getMinMax(stockAll);
             const minStock = stock.min.toString();
             const maxStock = stock.max.toString();
-            (inputStockMin as HTMLInputElement).value = minStock;
+            inputStockMin.value = minStock;
             textMinStock.innerHTML = minStock;
-            (inputStockMax as HTMLInputElement).value = maxStock;
+            inputStockMax.value = maxStock;
             textMaxStock.innerHTML = maxStock;
         }
 

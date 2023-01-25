@@ -74,25 +74,20 @@ export class Catalog {
         list.render('Category', category);
         list.render('Brand', brand);
 
-        const filterCategory = <HTMLDivElement>document.getElementById('category');
-        filterCategory.addEventListener('change', (event) => {
+        function handltrFilter(event: Event, name: string): void {
             const url = window.location.href;
             if ((event.target as HTMLInputElement).checked) {
-                setParamsUrl(url, 'category', (event.target as HTMLInputElement).value);
+                setParamsUrl(url, name, (event.target as HTMLInputElement).value);
             } else {
-                deleteParamsUrl(url, 'category', (event.target as HTMLInputElement).value);
+                deleteParamsUrl(url, name, (event.target as HTMLInputElement).value);
             }
-        });
+        }
+
+        const filterCategory = <HTMLDivElement>document.getElementById('category');
+        filterCategory.addEventListener('change', (event) => handltrFilter(event, 'category'));
 
         const filterBrand = <HTMLDivElement>document.getElementById('brand');
-        filterBrand.addEventListener('change', (event) => {
-            const url = window.location.href;
-            if ((event.target as HTMLInputElement).checked) {
-                setParamsUrl(url, 'brand', (event.target as HTMLInputElement).value);
-            } else {
-                deleteParamsUrl(url, 'brand', (event.target as HTMLInputElement).value);
-            }
-        });
+        filterBrand.addEventListener('change', (event) => handltrFilter(event, 'brand'));
 
         const minPrice = getMin(products, 'price');
         const maxPrice = getMax(products, 'price');
@@ -104,57 +99,41 @@ export class Catalog {
         slider.render('Price', { min: minPrice, max: maxPrice });
         slider.render('Stock', { min: minStock, max: maxStock });
 
-        const inputPriceMin = document.getElementsByClassName('price_min');
-        inputPriceMin[0].addEventListener('input', (event) => {
+        function handlerInputMin(event: Event, name: string): void {
             const target = event.target as HTMLInputElement;
             const targetNext = target.nextElementSibling as HTMLInputElement;
             if (parseInt(target.value) > parseInt(targetNext.value)) {
                 target.value = targetNext.value;
             }
-            const text = <HTMLSpanElement>document.getElementById('price_text_min');
+            const text = <HTMLSpanElement>document.getElementById(`${name}_text_min`);
             text.innerText = target.value;
             const url = window.location.href;
-            changeUrl(url, 'price-min', target.value);
-        });
+            changeUrl(url, `${name}-min`, target.value);
+        }
+
+        function handlerInputMax(event: Event, name: string): void {
+            const target = event.target as HTMLInputElement;
+            const targetPrevious = target.previousElementSibling as HTMLInputElement;
+            if (parseInt(target.value) < parseInt(targetPrevious.value)) {
+                target.value = targetPrevious.value;
+            }
+            const text = <HTMLSpanElement>document.getElementById(`${name}_text_max`);
+            text.innerText = target.value;
+            const url = window.location.href;
+            changeUrl(url, `${name}-max`, target.value);
+        }
+
+        const inputPriceMin = document.getElementsByClassName('price_min');
+        inputPriceMin[0].addEventListener('input', (event) => handlerInputMin(event, 'price'));
 
         const inputPriceMax = document.getElementsByClassName('price_max');
-        inputPriceMax[0].addEventListener('input', (event) => {
-            const target = event.target as HTMLInputElement;
-            const targetPrevious = target.previousElementSibling as HTMLInputElement;
-            if (parseInt(target.value) < parseInt(targetPrevious.value)) {
-                target.value = targetPrevious.value;
-            }
-            const text = <HTMLSpanElement>document.getElementById('price_text_max');
-            text.innerText = target.value;
-            const url = window.location.href;
-            changeUrl(url, 'price-max', target.value);
-        });
+        inputPriceMax[0].addEventListener('input', (event) => handlerInputMax(event, 'price'));
 
         const inputStockMin = document.getElementsByClassName('stock_min');
-        inputStockMin[0].addEventListener('input', (event) => {
-            const target = event.target as HTMLInputElement;
-            const targetNext = target.nextElementSibling as HTMLInputElement;
-            if (parseInt(target.value) > parseInt(targetNext.value)) {
-                target.value = targetNext.value;
-            }
-            const text = <HTMLSpanElement>document.getElementById('stock_text_min');
-            text.innerText = target.value;
-            const url = window.location.href;
-            changeUrl(url, 'stock-min', target.value);
-        });
+        inputStockMin[0].addEventListener('input', (event) => handlerInputMin(event, 'stock'));
 
         const inputStockMax = document.getElementsByClassName('stock_max');
-        inputStockMax[0].addEventListener('input', (event) => {
-            const target = event.target as HTMLInputElement;
-            const targetPrevious = target.previousElementSibling as HTMLInputElement;
-            if (parseInt(target.value) < parseInt(targetPrevious.value)) {
-                target.value = targetPrevious.value;
-            }
-            const text = <HTMLSpanElement>document.getElementById('stock_text_max');
-            text.innerText = target.value;
-            const url = window.location.href;
-            changeUrl(url, 'stock-max', target.value);
-        });
+        inputStockMax[0].addEventListener('input', (event) => handlerInputMax(event, 'stock'));
     }
 
     public renderCatalog(): void {

@@ -5,6 +5,20 @@ main {
     display: flex;
 }
 
+#buttons {
+    text-align: center;
+}
+
+#buttons > button {
+    margin: 5px;
+    background: #181a1c;
+    color: #ff9800;
+    font-size: 20px;
+    border: solid 1px #ff9800;
+    border-radius: 5px;
+
+}
+
 .catalog {
     border: solid 3px #ff9800;
     border-radius: 10px;

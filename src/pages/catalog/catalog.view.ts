@@ -68,11 +68,28 @@ export class Catalog {
 
     public renderFilters(): void {
         const buttons = <HTMLDivElement>document.getElementById('buttons');
-        const buttonReset = document.createElement('button');
-        const buttonCopy = document.createElement('button');
+        const buttonReset = <HTMLButtonElement>document.createElement('button');
+        const buttonCopy = <HTMLButtonElement>document.createElement('button');
+        buttonReset.innerHTML = 'Reset Filtrs';
+        buttonCopy.innerHTML = 'Copy Link';
 
         buttons.appendChild(buttonReset);
         buttons.appendChild(buttonCopy);
+
+        buttonReset.addEventListener('click', () => {
+            const url = window.location.origin;
+            history.pushState('', '', url);
+            window.dispatchEvent(new Event('pushstate'));
+        });
+
+        buttonCopy.addEventListener('click', () => {
+            const copytext = document.createElement('input');
+            copytext.value = window.location.href;
+            document.body.appendChild(copytext);
+            copytext.select();
+            document.execCommand('copy');
+            document.body.removeChild(copytext);
+        });
 
         const products = this.controller.getAll();
 

@@ -18,6 +18,7 @@ export class Catalog {
         const body = <HTMLBodyElement>document.getElementById(this.id);
         const main = <HTMLElement>document.createElement('main');
         const menu = <HTMLDivElement>document.createElement('div');
+        const buttons = <HTMLDivElement>document.createElement('div');
         const catalog = <HTMLDivElement>document.createElement('div');
         const catalogHead = <HTMLDivElement>document.createElement('div');
         const catalogProducts = <HTMLDivElement>document.createElement('div');
@@ -26,9 +27,11 @@ export class Catalog {
         catalogHead.innerHTML = template;
         catalogProducts.id = 'catalogProducts';
         menu.id = 'menu';
+        buttons.id = 'buttons';
 
         catalog.appendChild(catalogHead);
         catalog.appendChild(catalogProducts);
+        menu.appendChild(buttons);
         main.appendChild(menu);
         main.appendChild(catalog);
         body.appendChild(main);
@@ -64,6 +67,13 @@ export class Catalog {
     }
 
     public renderFilters(): void {
+        const buttons = <HTMLDivElement>document.getElementById('buttons');
+        const buttonReset = document.createElement('button');
+        const buttonCopy = document.createElement('button');
+
+        buttons.appendChild(buttonReset);
+        buttons.appendChild(buttonCopy);
+
         const products = this.controller.getAll();
 
         const category = this.controller.getCategory(products);

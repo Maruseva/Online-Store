@@ -115,15 +115,15 @@ export class CatalogController {
         return products.filter((element) => values.includes(element[name]));
     }
 
-    public slider(products: Product[], name: keyof Product, values: Range): Product[] {
-        if (values.min) {
+    public slider(products: Product[], name: keyof Product, { min, max }: Range): Product[] {
+        if (min) {
             return products.filter((element) => {
-                return element[name] > values.min;
+                return element[name] > min;
             });
         }
-        if (values.max) {
+        if (max) {
             return products.filter((element) => {
-                return element[name] < values.max;
+                return element[name] < max;
             });
         }
         return products;

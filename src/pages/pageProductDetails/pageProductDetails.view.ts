@@ -71,5 +71,10 @@ export class ProductDetails {
         priceWrap.innerHTML = `<span>&#8364;${product.price}</span>
         <button>ADD TO CART</button>
         <button>BUY NOW</button>`;
+
+        imagesWrap.addEventListener('click', (event) => {
+            const src = event.target.getAttribute('src');
+            bigImage.setAttribute('src', src);
+        });
     }
 }

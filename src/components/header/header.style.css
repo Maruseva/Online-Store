@@ -3,6 +3,12 @@ header {
     justify-content: space-between;
     align-items: center;
     background: #181a1c;
+    border-bottom: solid 2px #ff9800;
+    border-radius: 0 0 30px 30px;
+    margin-bottom: -25px;
+    z-index: 1;
+    position: relative;
+    padding: 10px 20px;
 }
 
 .header_logo {

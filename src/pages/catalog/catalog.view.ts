@@ -84,12 +84,8 @@ export class Catalog {
         });
 
         buttonCopy.addEventListener('click', () => {
-            const copytext = document.createElement('input');
-            copytext.value = window.location.href;
-            document.body.appendChild(copytext);
-            copytext.select();
-            document.execCommand('copy');
-            document.body.removeChild(copytext);
+            setTimeout(() => (buttonCopy.innerHTML = 'Copy Link'), 1000);
+            navigator.clipboard.writeText(window.location.href).then(() => (buttonCopy.innerHTML = 'Copied!'));
         });
 
         const products = this.controller.getAll();
@@ -175,17 +171,21 @@ export class Catalog {
         const url = window.location.href;
 
         const urlValueSearch = getUrlValue(url, 'search');
+        const search = <HTMLInputElement>document.getElementById('search');
         if (urlValueSearch) {
-            const search = <HTMLInputElement>document.getElementById('search');
             search.value = urlValueSearch;
             products = this.controller.search(products, urlValueSearch);
+        } else {
+            search.value = '';
         }
 
         const urlValueSort = getUrlValue(url, 'sort');
+        const select = <HTMLSelectElement>document.getElementById('select_sort');
         if (urlValueSort) {
-            const select = <HTMLSelectElement>document.getElementById('select_sort');
             select.value = urlValueSort;
             products = this.controller.sort(products, urlValueSort);
+        } else {
+            select.value = 'sort';
         }
 
         const urlValuesCategory = getAllParams(url, 'category');
@@ -196,6 +196,9 @@ export class Catalog {
                 input.checked = true;
             });
             products = this.controller.filter(products, 'category', urlValuesCategory);
+        } else {
+            const inputs = <NodeListOf<HTMLInputElement>>document.querySelectorAll('input[name="Category"]');
+            inputs.forEach((element) => (element.checked = false));
         }
 
         const urlValuesBrand = getAllParams(url, 'brand');
@@ -206,6 +209,9 @@ export class Catalog {
                 input.checked = true;
             });
             products = this.controller.filter(products, 'brand', urlValuesBrand);
+        } else {
+            const inputs = <NodeListOf<HTMLInputElement>>document.querySelectorAll('input[name="Brand"]');
+            inputs.forEach((element) => (element.checked = false));
         }
 
         const urlValuePriceMin = getUrlValue(url, 'price-min');

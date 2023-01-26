@@ -10,13 +10,13 @@ main {
 }
 
 #buttons > button {
+    width: 116px;
     margin: 5px;
     background: #181a1c;
     color: #ff9800;
     font-size: 20px;
     border: solid 1px #ff9800;
     border-radius: 5px;
-
 }
 
 .catalog {

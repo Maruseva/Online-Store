@@ -19,6 +19,7 @@ export class Catalog {
         const body = <HTMLBodyElement>document.getElementById(this.id);
         const main = <HTMLElement>document.createElement('main');
         const menu = <HTMLDivElement>document.createElement('div');
+        const buttons = <HTMLDivElement>document.createElement('div');
         const catalog = <HTMLDivElement>document.createElement('div');
         const catalogHead = <HTMLDivElement>document.createElement('div');
         const catalogProducts = <HTMLDivElement>document.createElement('div');
@@ -27,9 +28,11 @@ export class Catalog {
         catalogHead.innerHTML = template;
         catalogProducts.id = 'catalogProducts';
         menu.id = 'menu';
+        buttons.id = 'buttons';
 
         catalog.appendChild(catalogHead);
         catalog.appendChild(catalogProducts);
+        menu.appendChild(buttons);
         main.appendChild(menu);
         main.appendChild(catalog);
         body.appendChild(main);
@@ -65,6 +68,26 @@ export class Catalog {
     }
 
     public renderFilters(): void {
+        const buttons = <HTMLDivElement>document.getElementById('buttons');
+        const buttonReset = <HTMLButtonElement>document.createElement('button');
+        const buttonCopy = <HTMLButtonElement>document.createElement('button');
+        buttonReset.innerHTML = 'Reset Filtrs';
+        buttonCopy.innerHTML = 'Copy Link';
+
+        buttons.appendChild(buttonReset);
+        buttons.appendChild(buttonCopy);
+
+        buttonReset.addEventListener('click', () => {
+            const url = window.location.origin;
+            history.pushState('', '', url);
+            window.dispatchEvent(new Event('pushstate'));
+        });
+
+        buttonCopy.addEventListener('click', () => {
+            setTimeout(() => (buttonCopy.innerHTML = 'Copy Link'), 1000);
+            navigator.clipboard.writeText(window.location.href).then(() => (buttonCopy.innerHTML = 'Copied!'));
+        });
+
         const products = this.controller.getAll();
 
         const category = this.controller.getCategory(products);
@@ -148,17 +171,21 @@ export class Catalog {
         const url = window.location.href;
 
         const urlValueSearch = getUrlValue(url, 'search');
+        const search = <HTMLInputElement>document.getElementById('search');
         if (urlValueSearch) {
-            const search = <HTMLInputElement>document.getElementById('search');
             search.value = urlValueSearch;
             products = this.controller.search(products, urlValueSearch);
+        } else {
+            search.value = '';
         }
 
         const urlValueSort = getUrlValue(url, 'sort');
+        const select = <HTMLSelectElement>document.getElementById('select_sort');
         if (urlValueSort) {
-            const select = <HTMLSelectElement>document.getElementById('select_sort');
             select.value = urlValueSort;
             products = this.controller.sort(products, urlValueSort);
+        } else {
+            select.value = 'sort';
         }
 
         const urlValuesCategory = getAllParams(url, 'category');
@@ -169,6 +196,9 @@ export class Catalog {
                 input.checked = true;
             });
             products = this.controller.filter(products, 'category', urlValuesCategory);
+        } else {
+            const inputs = <NodeListOf<HTMLInputElement>>document.querySelectorAll('input[name="Category"]');
+            inputs.forEach((element) => (element.checked = false));
         }
 
         const urlValuesBrand = getAllParams(url, 'brand');
@@ -179,6 +209,9 @@ export class Catalog {
                 input.checked = true;
             });
             products = this.controller.filter(products, 'brand', urlValuesBrand);
+        } else {
+            const inputs = <NodeListOf<HTMLInputElement>>document.querySelectorAll('input[name="Brand"]');
+            inputs.forEach((element) => (element.checked = false));
         }
 
         const urlValuePriceMin = getUrlValue(url, 'price-min');

@@ -11,14 +11,14 @@ export class SliderCard extends Card {
         const { min, max } = parameter;
 
         const content = `<div class="slider_wrap">
-        <div class="slider_text"><span>${min}</span>
+        <div class="slider_text"><span id="${title.toLowerCase()}_text_min">${min}</span>
         <span>&#8660;</span>
-        <span>${max}</span>
+        <span id="${title.toLowerCase()}_text_max">${max}</span>
         </div>
         <div class="range_container">
     <div class="sliders_control">
-       <input id="fromSlider" type="range" min="${min}" max="${max}"/>
-       <input id="toSlider" type="range" min="${min}" max="${max}"/>
+       <input id="fromSlider" class="${title.toLowerCase()}_min" type="range" min="${min}" max="${max}" value="${min}"/>
+       <input id="toSlider" class="${title.toLowerCase()}_max" type="range" min="${min}" max="${max}" value="${max}"/>
     </div>
 </div>
         </div>`;

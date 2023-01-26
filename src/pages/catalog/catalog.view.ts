@@ -6,6 +6,7 @@ import template from './catalog.template.html';
 import './catalog.style.css';
 import { SliderCard } from '../../components/sliderCard/sliderCard.view';
 import { changeUrl, deleteParamsUrl, getAllParams, getUrlValue, setParamsUrl } from '../../utils/url';
+import { getMinMax } from '../../utils/sort';
 
 export class Catalog {
     private readonly id: string;
@@ -73,28 +74,73 @@ export class Catalog {
         list.render('Category', category);
         list.render('Brand', brand);
 
-        const slider = new SliderCard('menu');
-        slider.render('jhbfjhr', { min: 123, max: 5959 });
+        function handlerFilter(event: Event, name: string): void {
+            const url = window.location.href;
+            const target = event.target as HTMLInputElement;
+            if (target.checked) {
+                setParamsUrl(url, name, target.value);
+            } else {
+                deleteParamsUrl(url, name, target.value);
+            }
+        }
 
         const filterCategory = <HTMLDivElement>document.getElementById('category');
-        filterCategory.addEventListener('change', (event) => {
-            const url = window.location.href;
-            if ((event.target as HTMLInputElement).checked) {
-                setParamsUrl(url, 'category', (event.target as HTMLInputElement).value);
-            } else {
-                deleteParamsUrl(url, 'category', (event.target as HTMLInputElement).value);
-            }
-        });
+        filterCategory.addEventListener('change', (event) => handlerFilter(event, 'category'));
 
         const filterBrand = <HTMLDivElement>document.getElementById('brand');
-        filterBrand.addEventListener('change', (event) => {
-            const url = window.location.href;
-            if ((event.target as HTMLInputElement).checked) {
-                setParamsUrl(url, 'brand', (event.target as HTMLInputElement).value);
-            } else {
-                deleteParamsUrl(url, 'brand', (event.target as HTMLInputElement).value);
+        filterBrand.addEventListener('change', (event) => handlerFilter(event, 'brand'));
+
+        const priceAll = new Set(products.map((element) => element.price));
+        const price = getMinMax(priceAll);
+
+        const minPrice = price.min;
+        const maxPrice = price.max;
+
+        const stockAll = new Set(products.map((element) => element.stock));
+        const stock = getMinMax(stockAll);
+
+        const minStock = stock.min;
+        const maxStock = stock.max;
+
+        const slider = new SliderCard('menu');
+        slider.render('Price', { min: minPrice, max: maxPrice });
+        slider.render('Stock', { min: minStock, max: maxStock });
+
+        function handlerInputMin(event: Event, name: string): void {
+            const target = event.target as HTMLInputElement;
+            const targetNext = target.nextElementSibling as HTMLInputElement;
+            if (parseInt(target.value) > parseInt(targetNext.value)) {
+                target.value = targetNext.value;
             }
-        });
+            const text = <HTMLSpanElement>document.getElementById(`${name}_text_min`);
+            text.innerText = target.value;
+            const url = window.location.href;
+            changeUrl(url, `${name}-min`, target.value);
+        }
+
+        function handlerInputMax(event: Event, name: string): void {
+            const target = event.target as HTMLInputElement;
+            const targetPrevious = target.previousElementSibling as HTMLInputElement;
+            if (parseInt(target.value) < parseInt(targetPrevious.value)) {
+                target.value = targetPrevious.value;
+            }
+            const text = <HTMLSpanElement>document.getElementById(`${name}_text_max`);
+            text.innerText = target.value;
+            const url = window.location.href;
+            changeUrl(url, `${name}-max`, target.value);
+        }
+
+        const inputPriceMin = <HTMLInputElement>document.querySelector('input[class=price_min]');
+        inputPriceMin.addEventListener('input', (event) => handlerInputMin(event, 'price'));
+
+        const inputPriceMax = <HTMLInputElement>document.querySelector('input[class=price_max]');
+        inputPriceMax.addEventListener('input', (event) => handlerInputMax(event, 'price'));
+
+        const inputStockMin = <HTMLInputElement>document.querySelector('input[class=stock_min]');
+        inputStockMin.addEventListener('input', (event) => handlerInputMin(event, 'stock'));
+
+        const inputStockMax = <HTMLInputElement>document.querySelector('input[class=stock_max]');
+        inputStockMax.addEventListener('input', (event) => handlerInputMax(event, 'stock'));
     }
 
     public renderCatalog(): void {
@@ -133,6 +179,64 @@ export class Catalog {
                 input.checked = true;
             });
             products = this.controller.filter(products, 'brand', urlValuesBrand);
+        }
+
+        const urlValuePriceMin = getUrlValue(url, 'price-min');
+        const urlValuePriceMax = getUrlValue(url, 'price-max');
+
+        const inputPriceMin = <HTMLInputElement>document.querySelector('input[class=price_min]');
+        const inputPriceMax = <HTMLInputElement>document.querySelector('input[class=price_max]');
+        const textMin = <HTMLSpanElement>document.getElementById('price_text_min');
+        const textMax = <HTMLSpanElement>document.getElementById('price_text_max');
+
+        if (urlValuePriceMin) {
+            inputPriceMin.value = urlValuePriceMin;
+            textMin.innerHTML = urlValuePriceMin;
+            products = this.controller.slider(products, 'price', { min: parseInt(urlValuePriceMin) });
+        }
+        if (urlValuePriceMax) {
+            inputPriceMax.value = urlValuePriceMax;
+            textMax.innerHTML = urlValuePriceMax;
+            products = this.controller.slider(products, 'price', { max: parseInt(urlValuePriceMax) });
+        }
+        if (!urlValuePriceMin && !urlValuePriceMax && products.length) {
+            const priceAll = new Set(products.map((element) => element.price));
+            const price = getMinMax(priceAll);
+            const minPrice = price.min.toString();
+            const maxPrice = price.max.toString();
+            inputPriceMin.value = minPrice;
+            textMin.innerHTML = minPrice;
+            inputPriceMax.value = maxPrice;
+            textMax.innerHTML = maxPrice;
+        }
+
+        const urlValueStockMin = getUrlValue(url, 'stock-min');
+        const urlValueStockMax = getUrlValue(url, 'stock-max');
+
+        const inputStockMin = <HTMLInputElement>document.querySelector('input[class=stock_min]');
+        const inputStockMax = <HTMLInputElement>document.querySelector('input[class=stock_max]');
+        const textMinStock = <HTMLSpanElement>document.getElementById('stock_text_min');
+        const textMaxStock = <HTMLSpanElement>document.getElementById('stock_text_max');
+
+        if (urlValueStockMin) {
+            inputStockMin.value = urlValueStockMin;
+            textMinStock.innerHTML = urlValueStockMin;
+            products = this.controller.slider(products, 'stock', { min: parseInt(urlValueStockMin) });
+        }
+        if (urlValueStockMax) {
+            inputStockMax.value = urlValueStockMax;
+            textMaxStock.innerHTML = urlValueStockMax;
+            products = this.controller.slider(products, 'stock', { max: parseInt(urlValueStockMax) });
+        }
+        if (!urlValueStockMin && !urlValueStockMax && products.length) {
+            const stockAll = new Set(products.map((element) => element.stock));
+            const stock = getMinMax(stockAll);
+            const minStock = stock.min.toString();
+            const maxStock = stock.max.toString();
+            inputStockMin.value = minStock;
+            textMinStock.innerHTML = minStock;
+            inputStockMax.value = maxStock;
+            textMaxStock.innerHTML = maxStock;
         }
 
         const product = new ProductCard('catalogProducts');

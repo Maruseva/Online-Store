@@ -2,6 +2,11 @@ import { Product, ProductModel } from '../../model/product.model';
 import { Options } from '../../components/listCard/listCard.view';
 import { sortASC, sortDESC } from '../../utils/sort';
 
+export interface Range {
+    min?: number;
+    max?: number;
+}
+
 export class CatalogController {
     private model: ProductModel;
     constructor() {
@@ -78,6 +83,10 @@ export class CatalogController {
             return products.sort(sortDESC<Product>('discountPercentage'));
         }
 
+        if (value === 'stock-ASC') {
+            return products.sort(sortASC<Product>('stock'));
+        }
+
         return products;
     }
 
@@ -104,5 +113,19 @@ export class CatalogController {
 
     public filter(products: Product[], name: 'brand' | 'category', values: string[]): Product[] {
         return products.filter((element) => values.includes(element[name]));
+    }
+
+    public slider(products: Product[], name: keyof Product, { min, max }: Range): Product[] {
+        if (min) {
+            return products.filter((element) => {
+                return element[name] > min;
+            });
+        }
+        if (max) {
+            return products.filter((element) => {
+                return element[name] < max;
+            });
+        }
+        return products;
     }
 }

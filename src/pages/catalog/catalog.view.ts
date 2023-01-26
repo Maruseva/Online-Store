@@ -5,7 +5,7 @@ import { ListCard } from '../../components/listCard/listCard.view';
 import template from './catalog.template.html';
 import './catalog.style.css';
 import { SliderCard } from '../../components/sliderCard/sliderCard.view';
-import { changeUrl, deleteParamsUrl, getAllParams, getUrlValue, setParamsUrl } from '../../utils/url';
+import { changePagesUrl, changeUrl, deleteParamsUrl, getAllParams, getUrlValue, setParamsUrl } from '../../utils/url';
 import { getMinMax } from '../../utils/sort';
 
 export class Catalog {
@@ -58,6 +58,15 @@ export class Catalog {
         search.addEventListener('input', () => {
             const url = window.location.href;
             changeUrl(url, 'search', search.value);
+        });
+
+        catalogProducts.addEventListener('click', (event) => {
+            const card = (event.target as HTMLElement).closest('div[class="card_item"]') as HTMLDivElement;
+            const id = card.getAttribute('data-id');
+            const url = window.location.origin;
+            if (id) {
+                changePagesUrl(url, 'product-details', id);
+            }
         });
 
         this.renderFilters();

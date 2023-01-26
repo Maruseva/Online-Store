@@ -30,3 +30,10 @@ export function getAllParams(url: string, name: string): string[] | null {
     const urlNew = new URL(url);
     return urlNew.searchParams.getAll(name).map((element) => decodeURIComponent(element));
 }
+
+export function changePagesUrl(url: string, name: string, value: string): void {
+    const urlNew = new URL(url);
+    urlNew.pathname = name + '/' + value;
+    history.pushState('', '', urlNew);
+    window.dispatchEvent(new Event('pushstate'));
+}

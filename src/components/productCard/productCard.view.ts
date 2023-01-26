@@ -21,7 +21,7 @@ export class ProductCard extends Card {
             </div>
             <img src="${description.images[0]}" alt="">
         </div>`;
-        super.renderCard(description.title, content);
+        super.renderCard(description.title, content, description.id.toString());
     }
 
     public renderSmallCard(description: Product): void {
@@ -32,6 +32,6 @@ export class ProductCard extends Card {
             </div>
             <img src="${description.images[0]}" alt="">
         </div>`;
-        super.renderCard(description.title, content);
+        super.renderCard(description.title, content, description.id.toString());
     }
 }

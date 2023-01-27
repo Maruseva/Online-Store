@@ -31,9 +31,13 @@ export function getAllParams(url: string, name: string): string[] | null {
     return urlNew.searchParams.getAll(name).map((element) => decodeURIComponent(element));
 }
 
-export function changePagesUrl(url: string, name: string, value: string): void {
+export function changePagesUrl(url: string, name: string, value?: string): void {
     const urlNew = new URL(url);
-    urlNew.pathname = name + '/' + value;
+    if (value) {
+        urlNew.pathname = name + '/' + value;
+    } else {
+        urlNew.pathname = name;
+    }
     history.pushState('', '', urlNew);
     window.dispatchEvent(new Event('pushstate'));
 }

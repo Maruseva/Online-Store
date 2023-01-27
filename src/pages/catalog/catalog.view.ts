@@ -11,9 +11,15 @@ import { getMinMax } from '../../utils/sort';
 export class Catalog {
     private readonly id: string;
     private controller: CatalogController;
+    private list: ListCard;
+    private slider: SliderCard;
+    private product: ProductCard;
     constructor(id: string) {
         this.id = id;
         this.controller = new CatalogController();
+        this.list = new ListCard('menu');
+        this.slider = new SliderCard('menu');
+        this.product = new ProductCard('catalogProducts');
     }
     public render(): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
@@ -79,9 +85,8 @@ export class Catalog {
         const category = this.controller.getCategory(products);
         const brand = this.controller.getBrand(products);
 
-        const list = new ListCard('menu');
-        list.render('Category', category);
-        list.render('Brand', brand);
+        this.list.render('Category', category);
+        this.list.render('Brand', brand);
 
         function handlerFilter(event: Event, name: string): void {
             const url = window.location.href;
@@ -111,9 +116,8 @@ export class Catalog {
         const minStock = stock.min;
         const maxStock = stock.max;
 
-        const slider = new SliderCard('menu');
-        slider.render('Price', { min: minPrice, max: maxPrice });
-        slider.render('Stock', { min: minStock, max: maxStock });
+        this.slider.render('Price', { min: minPrice, max: maxPrice });
+        this.slider.render('Stock', { min: minStock, max: maxStock });
 
         function handlerInputMin(event: Event, name: string): void {
             const target = event.target as HTMLInputElement;
@@ -248,14 +252,13 @@ export class Catalog {
             textMaxStock.innerHTML = maxStock;
         }
 
-        const product = new ProductCard('catalogProducts');
         const urlValueViewMode = getUrlValue(url, 'view-mode');
 
         products.forEach((element: Product) => {
             if (urlValueViewMode === 'small') {
-                product.renderSmallCard(element);
+                this.product.renderSmallCard(element);
             } else {
-                product.renderBigCard(element);
+                this.product.renderBigCard(element);
             }
         });
 

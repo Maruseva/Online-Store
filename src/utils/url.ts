@@ -33,11 +33,8 @@ export function getAllParams(url: string, name: string): string[] | null {
 
 export function changePagesUrl(url: string, name: string, value?: string): void {
     const urlNew = new URL(url);
-    if (value) {
-        urlNew.pathname = name + '/' + value;
-    } else {
-        urlNew.pathname = name;
-    }
+    value ? (urlNew.pathname = name + '/' + value) : (urlNew.pathname = name);
+
     history.pushState('', '', urlNew);
     window.dispatchEvent(new Event('pushstate'));
 }

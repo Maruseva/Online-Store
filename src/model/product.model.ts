@@ -18,4 +18,8 @@ export class ProductModel {
     public getAll(): Product[] {
         return data.products;
     }
+
+    public getItemById(id: number): Product | undefined {
+        return data.products.find((element) => element.id === id);
+    }
 }

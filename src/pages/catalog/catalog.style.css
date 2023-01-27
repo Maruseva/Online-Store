@@ -1,7 +1,7 @@
 main {
     background: #400d06;
     box-sizing: border-box;
-    padding: 20px;
+    padding: 50px 20px;
     display: flex;
 }
 

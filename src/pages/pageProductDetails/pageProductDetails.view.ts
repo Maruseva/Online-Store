@@ -5,9 +5,11 @@ import './pageProductDetails.style.css';
 export class ProductDetails {
     private readonly id: string;
     private controller: ProductDetailsController;
+    private card: Card;
     constructor(id: string) {
         this.id = id;
         this.controller = new ProductDetailsController();
+        this.card = new Card('descriptionsWrap');
     }
 
     public render(): void {
@@ -57,16 +59,15 @@ export class ProductDetails {
 
             bigImage.setAttribute('src', product.images[0]);
 
-            const card = new Card('descriptionsWrap');
-            card.renderCard('Description:', `<div class="description">${product.description}</div>`);
-            card.renderCard(
+            this.card.renderCard('Description:', `<div class="description">${product.description}</div>`);
+            this.card.renderCard(
                 'Discount Percentage:',
                 `<div class="description">${product.discountPercentage.toString()}</div>`
             );
-            card.renderCard('Rating:', `<div class="description">${product.rating.toString()}</div>`);
-            card.renderCard('Stock:', `<div class="description">${product.stock.toString()}</div>`);
-            card.renderCard('Brand:', `<div class="description">${product.brand}</div>`);
-            card.renderCard('Category:', `<div class="description">${product.category}</div>`);
+            this.card.renderCard('Rating:', `<div class="description">${product.rating.toString()}</div>`);
+            this.card.renderCard('Stock:', `<div class="description">${product.stock.toString()}</div>`);
+            this.card.renderCard('Brand:', `<div class="description">${product.brand}</div>`);
+            this.card.renderCard('Category:', `<div class="description">${product.category}</div>`);
 
             priceWrap.innerHTML = `<span>&#8364;${product.price}</span>
         <button>ADD TO CART</button>

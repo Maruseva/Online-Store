@@ -19,8 +19,7 @@ export class ProductModel {
         return data.products;
     }
 
-    public getItemById(id: number): Product {
-        const arr = data.products.filter((element) => element.id === id);
-        return arr[0];
+    public getItemById(id: number): Product | undefined {
+        return data.products.find((element) => element.id === id);
     }
 }

@@ -5,7 +5,7 @@ export class ProductDetailsController {
     constructor() {
         this.model = new ProductModel();
     }
-    public getItemById(id: number): Product {
+    public getItemById(id: number): Product | undefined {
         return this.model.getItemById(id);
     }
 }

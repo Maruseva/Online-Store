@@ -3,6 +3,7 @@
     box-sizing: border-box;
     text-align: center;
     padding: 50px 0;
+    height: 100%;
 }
 
 .breadcrumbs {
@@ -55,10 +56,10 @@
     margin: 5px;
 }
 
-#descriotionsWrap {
+#descriptionsWrap {
     width: 400px;
 }
-.descriotion {
+.description {
     padding-top: 30px;
     color: #f6deb3;
 }

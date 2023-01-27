@@ -42,7 +42,7 @@ export class ProductDetails {
         main.appendChild(item);
         body.appendChild(main);
 
-        const product = this.controller.getItemById(1);
+        const product = this.controller.getItemById(134);
         if (product) {
             breadcrumbs.innerHTML = `STORE <span>>></span> 
         ${product.category.toLocaleUpperCase()} <span>>></span>
@@ -79,6 +79,9 @@ export class ProductDetails {
                     bigImage.setAttribute('src', src);
                 }
             });
+        } else {
+            main.innerHTML = `<div class="not-found">Product number
+            <span>${this.id}</span> not found</div>`;
         }
     }
 }

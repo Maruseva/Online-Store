@@ -283,6 +283,18 @@ export class Catalog {
             }
         });
 
+        if (products.length === 0) {
+            const catalogProducts = <HTMLDivElement>document.getElementById('catalogProducts');
+            catalogProducts.innerHTML = '<div class="not-found">No products found</div>';
+            textMin.innerHTML = '';
+            textMax.innerHTML = '';
+            textMinStock.innerHTML = '';
+            textMaxStock.innerHTML = '';
+
+            const texts = document.querySelectorAll('span[class="slider_text_not_found"]');
+            texts.forEach((element) => (element.innerHTML = 'NOT FOUND'));
+        }
+
         const catalogHeadText = document.getElementsByClassName('catalogHead_text');
         catalogHeadText[0].innerHTML = `<span>Found: ${products.length}</span>`;
     }

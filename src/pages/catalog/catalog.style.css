@@ -71,3 +71,9 @@ main {
     width: 50px;
     cursor: pointer;
 }
+
+.not-found {
+    color: #ff9800;
+    font-size: 40px;
+    padding-top: 40px;
+}

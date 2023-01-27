@@ -21,17 +21,17 @@ export class ProductCard extends Card {
             </div>
             <img src="${description.images[0]}" alt="">
         </div>`;
-        super.renderCard(description.title, content);
+        super.renderCard(description.title, content, description.id.toString());
     }
 
-    public renderSmallCard(description: Product): void {
+    public renderSmallCard({ title, id, images }: Product): void {
         const content: string = `<div class="card_itemContent_small">
             <div class="card_button">
                 <button>ADD TO CART</button>
                 <button>DETAILS</button>
             </div>
-            <img src="${description.images[0]}" alt="">
+            <img src="${images[0]}" alt="">
         </div>`;
-        super.renderCard(description.title, content);
+        super.renderCard(title, content, id.toString());
     }
 }

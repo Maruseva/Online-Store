@@ -79,6 +79,8 @@ export class Catalog {
             }
         });
 
+        this.state = true;
+
         this.renderFilters();
         this.renderCatalog();
     }

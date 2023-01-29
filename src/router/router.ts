@@ -20,7 +20,7 @@ export class Router {
         this.pageNotFound = new PageNotFound(this.id);
         this.footer = new Footer(this.id);
     }
-    render() {
+    render(): void {
         this.header.render();
 
         const url = window.location.href;
@@ -28,42 +28,41 @@ export class Router {
 
         if (pathname === '/') {
             this.catalog.render();
-        }
-
-        if (pathname.includes('product-details')) {
+        } else if (pathname.includes('product-details')) {
             const index = pathname.lastIndexOf('/');
             const numberProduct = parseInt(pathname.slice(index + 1));
             this.details.render(numberProduct);
-        }
-
-        if (pathname === 'cart') {
+        } else if (pathname === 'cart') {
             // пока нет
-        }
-
-        if (pathname === '404') {
+        } else {
             this.pageNotFound.render();
         }
 
         this.footer.render();
     }
 
-    run() {
+    run(): void {
         this.render();
 
         const renderPage = () => {
             const url = window.location.href;
             const pathname = getPathname(url);
-            console.log(pathname);
-            if (pathname === '/') {
+            if (pathname === '/' && this.catalog.state === true) {
                 this.catalog.clearCatalog();
                 this.catalog.renderCatalog();
             } else {
-                console.log(pathname);
+                this.clear();
                 this.render();
             }
         };
 
         window.addEventListener('pushstate', renderPage);
         window.addEventListener('popstate', renderPage);
+    }
+
+    clear(): void {
+        const body = <HTMLBodyElement>document.getElementById(this.id);
+        body.innerHTML = '';
+        this.catalog.state = false;
     }
 }

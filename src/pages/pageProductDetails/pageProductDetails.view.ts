@@ -45,6 +45,7 @@ export class ProductDetails {
         body.appendChild(main);
 
         const product = this.controller.getItemById(this.produktId);
+
         if (product) {
             breadcrumbs.innerHTML = `STORE <span>>></span> 
         ${product.category.toLocaleUpperCase()} <span>>></span>

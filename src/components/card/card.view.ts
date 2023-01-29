@@ -6,12 +6,13 @@ export class Card {
         this.id = id;
     }
 
-    public renderCard(title: string, content: string = ''): void {
+    public renderCard(title: string, content: string = '', id: string = ''): void {
         const container = <HTMLElement>document.getElementById(this.id);
         const item = <HTMLDivElement>document.createElement('div');
         const itemTitle = <HTMLHeadingElement>document.createElement('h3');
         const itemContent = <HTMLDivElement>document.createElement('div');
         item.className = 'card_item';
+        item.setAttribute('data-id', id);
         itemTitle.innerText = title;
         itemContent.innerHTML = content;
 

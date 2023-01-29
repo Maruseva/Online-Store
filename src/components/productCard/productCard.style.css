@@ -1,6 +1,7 @@
 .card_itemContent_big {
     height: 250px;
     width: 250px;
+    cursor: pointer;
 }
 
 .card_itemContent_wrap {
@@ -38,6 +39,7 @@ button {
 .card_itemContent_small {
     height: 150px;
     width: 200px;
+    cursor: pointer;
 }
 
 .card_itemContent_small > img {

@@ -9,6 +9,7 @@ import { changePagesUrl, changeUrl, deleteParamsUrl, getAllParams, getUrlValue, 
 import { getMinMax } from '../../utils/sort';
 
 export class Catalog {
+    public state: boolean = false;
     private readonly id: string;
     private controller: CatalogController;
     private list: ListCard;

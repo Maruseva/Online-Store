@@ -22,6 +22,7 @@ main {
 .catalog {
     border: solid 3px #ff9800;
     border-radius: 10px;
+    width: 100%;
 }
 
 #catalogProducts {

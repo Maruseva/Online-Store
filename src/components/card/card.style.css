@@ -4,6 +4,7 @@
     border-radius: 10px;
     margin: 6px;
     background: #352822;
+    height: fit-content;
 }
 
 .card_item > h3 {

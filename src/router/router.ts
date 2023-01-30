@@ -25,14 +25,14 @@ export class Router {
 
         const url = window.location.href;
         const pathname = getPathname(url);
+        const value = pathname.split('/');
 
-        if (pathname === '/') {
+        if (value[1] === '') {
             this.catalog.render();
-        } else if (pathname.includes('product-details')) {
-            const index = pathname.lastIndexOf('/');
-            const numberProduct = parseInt(pathname.slice(index + 1));
+        } else if (value[1] === 'product-details') {
+            const numberProduct = parseInt(value[2]);
             this.details.render(numberProduct);
-        } else if (pathname === 'cart') {
+        } else if (value[1] === 'cart') {
             // пока нет
         } else {
             this.pageNotFound.render();

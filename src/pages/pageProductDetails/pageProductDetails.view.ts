@@ -4,12 +4,12 @@ import './pageProductDetails.style.css';
 
 export class ProductDetails {
     private readonly id: string;
-    private readonly produktId: number;
+    private readonly productId: number;
     private controller: ProductDetailsController;
     private card: Card;
-    constructor(id: string, produktId: number) {
+    constructor(id: string, productId: number) {
         this.id = id;
-        this.produktId = produktId;
+        this.productId = productId;
         this.controller = new ProductDetailsController();
         this.card = new Card('descriptionsWrap');
     }
@@ -44,7 +44,7 @@ export class ProductDetails {
         main.appendChild(item);
         body.appendChild(main);
 
-        const product = this.controller.getItemById(this.produktId);
+        const product = this.controller.getItemById(this.productId);
 
         if (product) {
             breadcrumbs.innerHTML = `STORE <span>>></span> 
@@ -84,7 +84,7 @@ export class ProductDetails {
             });
         } else {
             main.innerHTML = `<div class="not-found">Product number
-            <span>${this.produktId}</span> not found</div>`;
+            <span>${this.productId}</span> not found</div>`;
         }
     }
 }

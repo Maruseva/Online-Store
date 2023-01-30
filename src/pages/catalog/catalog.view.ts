@@ -298,7 +298,7 @@ export class Catalog {
             }
         });
 
-        if (products.length === 0) {
+        if (!products.length) {
             const catalogProducts = <HTMLDivElement>document.getElementById('catalogProducts');
             catalogProducts.innerHTML = '<div class="not-found">No products found</div>';
             textMin.innerHTML = '';

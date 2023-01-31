@@ -9,6 +9,7 @@ export class PageNotFound {
     public render(): void {
         const body = <HTMLElement>document.getElementById(this.id);
         const page = <HTMLDivElement>document.createElement('div');
+        page.className = 'page_not_found';
         page.innerHTML = template;
         body.appendChild(page);
     }

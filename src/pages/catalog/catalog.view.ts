@@ -9,6 +9,7 @@ import { changePagesUrl, changeUrl, deleteParamsUrl, getAllParams, getUrlValue, 
 import { getMinMax } from '../../utils/sort';
 
 export class Catalog {
+    public state: boolean = false;
     private readonly id: string;
     private controller: CatalogController;
     private list: ListCard;
@@ -77,6 +78,8 @@ export class Catalog {
                 changePagesUrl(url, 'product-details', id);
             }
         });
+
+        this.state = true;
 
         this.renderFilters();
         this.renderCatalog();

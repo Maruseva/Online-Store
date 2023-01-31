@@ -14,7 +14,7 @@ export class ProductDetails {
         this.card = new Card('descriptionsWrap');
     }
 
-    public render(): void {
+    public render(numberProduct: number): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
         const main = <HTMLElement>document.createElement('div');
         const breadcrumbs = <HTMLDivElement>document.createElement('div');
@@ -44,8 +44,7 @@ export class ProductDetails {
         main.appendChild(item);
         body.appendChild(main);
 
-        const product = this.controller.getItemById(this.productId);
-
+        const product = this.controller.getItemById(numberProduct);
         if (product) {
             breadcrumbs.innerHTML = `STORE <span>>></span> 
         ${product.category.toLocaleUpperCase()} <span>>></span>

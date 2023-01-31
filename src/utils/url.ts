@@ -38,3 +38,8 @@ export function changePagesUrl(url: string, name: string, value?: string): void 
     history.pushState('', '', urlNew);
     window.dispatchEvent(new Event('pushstate'));
 }
+
+export function getPathname(url: string): string {
+    const urlNew = new URL(url);
+    return urlNew.pathname;
+}

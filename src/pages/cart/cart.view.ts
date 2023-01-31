@@ -16,30 +16,22 @@ export class Cart {
     render(productsCart: Product[]): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
         const cartWrap = <HTMLDivElement>document.createElement('div');
-        const productsInCart = <HTMLDivElement>document.createElement('div');
-        const productsTitle = <HTMLDivElement>document.createElement('div');
-        const productsRows = <HTMLDivElement>document.createElement('div');
         const summary = <HTMLDivElement>document.createElement('div');
         cartWrap.id = 'cartWrap';
-        productsInCart.className = 'productsInCart';
-        productsTitle.className = 'productsTitle';
-        productsRows.id = 'productsRows';
-        productsInCart.appendChild(productsTitle);
-        productsInCart.appendChild(productsRows);
         cartWrap.appendChild(summary);
-        cartWrap.appendChild(productsInCart);
-        body.appendChild(cartWrap);
 
-        productsTitle.innerHTML = `
-        <span>Products In Cart</span>
-        <div class="page"><div>LIMIT: 1</div>
-            <div class="page_buttons">PAGE: <button><</button><span>1</span><button>></button></div>
-        </div>`;
+        cartWrap.innerHTML = `<div class="productsInCart">
+        <div class="productsTitle">
+          <span>Products In Cart</span>
+          <div class="page"><div>LIMIT: 1</div>
+              <div class="page_buttons">PAGE: <button><</button><span>1</span><button>></button></div>
+          </div>
+        </div>
+        <div id="productsRows"></div>
+      </div>`;
 
         productsCart.forEach((element, index) => {
-            this.productInRow.render(element);
-            const num = <NodeListOf<Element>>document.querySelectorAll('div[class="number"]');
-            num[index].innerHTML = (index + 1).toString();
+            this.productInRow.render(element, index + 1);
         });
 
         const content = `<div class="content_wrap">
@@ -50,5 +42,6 @@ export class Cart {
         </div>`;
 
         this.card.renderCard('Summary', content);
+        body.appendChild(cartWrap);
     }
 }

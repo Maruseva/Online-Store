@@ -12,7 +12,7 @@ export class SliderCard extends Card {
 
         const content = `<div class="slider_wrap">
         <div class="slider_text"><span id="${title.toLowerCase()}_text_min">${min}</span>
-        <span>&#8660;</span>
+        <span class="slider_text_not_found">&#8660;</span>
         <span id="${title.toLowerCase()}_text_max">${max}</span>
         </div>
         <div class="range_container">

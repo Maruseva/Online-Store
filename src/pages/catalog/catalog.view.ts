@@ -7,6 +7,7 @@ import './catalog.style.css';
 import { SliderCard } from '../../components/sliderCard/sliderCard.view';
 import { changePagesUrl, changeUrl, deleteParamsUrl, getAllParams, getUrlValue, setParamsUrl } from '../../utils/url';
 import { getMinMax } from '../../utils/sort';
+import { ProductDetailsController } from '../pageProductDetails/pageProductDetails.controller';
 
 export class Catalog {
     private readonly id: string;
@@ -14,12 +15,14 @@ export class Catalog {
     private list: ListCard;
     private slider: SliderCard;
     private product: ProductCard;
+    private productDetails: ProductDetailsController;
     constructor(id: string) {
         this.id = id;
         this.controller = new CatalogController();
         this.list = new ListCard('menu');
         this.slider = new SliderCard('menu');
         this.product = new ProductCard('catalogProducts');
+        this.productDetails = new ProductDetailsController();
     }
     public render(): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
@@ -70,10 +73,16 @@ export class Catalog {
         });
 
         catalogProducts.addEventListener('click', (event) => {
-            const card = (event.target as HTMLElement).closest('div[class="card_item"]') as HTMLDivElement;
+            const target = event.target as HTMLElement;
+            const card = target.closest('div[class="card_item"]') as HTMLDivElement;
             const id = card.getAttribute('data-id');
             const url = window.location.origin;
-            if (id) {
+            if (id && target.className === 'add_to_cart') {
+                const product = this.productDetails.getItemById(parseInt(id));
+                if (product) {
+                    this.controller.add(product);
+                }
+            } else if (id) {
                 changePagesUrl(url, 'product-details', id);
             }
         });

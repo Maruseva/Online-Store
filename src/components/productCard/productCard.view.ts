@@ -15,7 +15,7 @@ export class ProductCard extends Card {
                     <span>Stock: </span>${description.stock}<br>
                 </div>
                 <div class="card_button">
-                    <button>ADD TO CART</button>
+                    <button class="add_to_cart">ADD TO CART</button>
                     <button>DETAILS</button>
                 </div>
             </div>
@@ -27,7 +27,7 @@ export class ProductCard extends Card {
     public renderSmallCard({ title, id, images }: Product): void {
         const content: string = `<div class="card_itemContent_small">
             <div class="card_button">
-                <button>ADD TO CART</button>
+                <button class="add_to_cart">ADD TO CART</button>
                 <button>DETAILS</button>
             </div>
             <img src="${images[0]}" alt="">

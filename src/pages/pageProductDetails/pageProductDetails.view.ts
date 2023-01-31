@@ -4,17 +4,15 @@ import './pageProductDetails.style.css';
 
 export class ProductDetails {
     private readonly id: string;
-    private readonly productId: number;
     private controller: ProductDetailsController;
     private card: Card;
-    constructor(id: string, productId: number) {
+    constructor(id: string) {
         this.id = id;
-        this.productId = productId;
         this.controller = new ProductDetailsController();
         this.card = new Card('descriptionsWrap');
     }
 
-    public render(numberProduct: number): void {
+    public render(productId: number): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
         const main = <HTMLElement>document.createElement('div');
         const breadcrumbs = <HTMLDivElement>document.createElement('div');
@@ -44,7 +42,7 @@ export class ProductDetails {
         main.appendChild(item);
         body.appendChild(main);
 
-        const product = this.controller.getItemById(numberProduct);
+        const product = this.controller.getItemById(productId);
         if (product) {
             breadcrumbs.innerHTML = `STORE <span>>></span> 
         ${product.category.toLocaleUpperCase()} <span>>></span>
@@ -83,7 +81,7 @@ export class ProductDetails {
             });
         } else {
             main.innerHTML = `<div class="not-found">Product number
-            <span>${this.productId}</span> not found</div>`;
+            <span>${productId}</span> not found</div>`;
         }
     }
 }

@@ -8,10 +8,6 @@ export class CartModel {
     }
 
     public delete(id: number): void {
-        this.cart.forEach((element, index) => {
-            if (element.id === id) {
-                this.cart.splice(index, 1);
-            }
-        });
+        this.cart.filter((element) => element.id !== id);
     }
 }

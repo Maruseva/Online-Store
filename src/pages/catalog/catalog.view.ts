@@ -9,6 +9,7 @@ import { changePagesUrl, changeUrl, deleteParamsUrl, getAllParams, getUrlValue, 
 import { getMinMax } from '../../utils/sort';
 import { ProductDetailsController } from '../pageProductDetails/pageProductDetails.controller';
 import { CartService } from '../../service/cart.service';
+import { HeaderView } from '../../components/header/header.view';
 
 export class Catalog {
     public state: boolean = false;
@@ -19,6 +20,7 @@ export class Catalog {
     private product: ProductCard;
     private productDetails: ProductDetailsController;
     private service: CartService;
+    header: HeaderView;
     constructor(id: string) {
         this.id = id;
         this.controller = new CatalogController();
@@ -27,6 +29,7 @@ export class Catalog {
         this.product = new ProductCard('catalogProducts');
         this.productDetails = new ProductDetailsController();
         this.service = new CartService();
+        this.header = new HeaderView(this.id);
     }
     public render(): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
@@ -85,6 +88,7 @@ export class Catalog {
                 const product = this.productDetails.getItemById(parseInt(id));
                 if (product) {
                     this.service.add(product);
+                    this.header.update();
                 }
             } else if (id) {
                 changePagesUrl(url, 'product-details', id);

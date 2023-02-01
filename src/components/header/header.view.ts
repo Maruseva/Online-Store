@@ -29,15 +29,24 @@ export class HeaderView {
         });
 
         const products = this.service.getProducts();
+        if (products.length) {
+            this.update();
+        }
+    }
+
+    public update(): void {
+        const products = this.service.getProducts();
+        const price = <HTMLSpanElement>document.querySelector('span[class="header_price"]');
+        const number = <HTMLDivElement>document.querySelector('div[class="header_numder"]');
 
         if (products.length) {
             let priceAll = 0;
             products.forEach((element) => (priceAll += element.price));
-            const price = <HTMLSpanElement>document.querySelector('span[class="header_price"]');
             price.innerHTML = `&#8364;${priceAll}`;
-
-            const number = <HTMLDivElement>document.querySelector('div[class="header_numder"]');
             number.innerHTML = products.length.toString();
+        } else {
+            price.innerHTML = `&#8364;0`;
+            number.innerHTML = '0';
         }
     }
 }

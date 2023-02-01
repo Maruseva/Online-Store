@@ -1,4 +1,5 @@
 import { Card } from '../../components/card/card.view';
+import { CartService } from '../../service/cart.service';
 import { ProductDetailsController } from './pageProductDetails.controller';
 import './pageProductDetails.style.css';
 
@@ -6,10 +7,12 @@ export class ProductDetails {
     private readonly id: string;
     private controller: ProductDetailsController;
     private card: Card;
+    private service: CartService;
     constructor(id: string) {
         this.id = id;
         this.controller = new ProductDetailsController();
         this.card = new Card('descriptionsWrap');
+        this.service = new CartService();
     }
 
     public render(productId: number): void {
@@ -69,14 +72,35 @@ export class ProductDetails {
             this.card.renderCard('Brand:', `<div class="description">${product.brand}</div>`);
             this.card.renderCard('Category:', `<div class="description">${product.category}</div>`);
 
+            let text = 'ADD TO CART';
+            const cartProducts = this.service.getProducts();
+            const result = cartProducts.find((element) => element.id === product.id);
+
+            if (result) {
+                text = 'DROP FROM CART';
+            }
+
             priceWrap.innerHTML = `<span>&#8364;${product.price}</span>
-        <button>ADD TO CART</button>
+        <button class="add_delete">${text}</button>
         <button>BUY NOW</button>`;
 
             imagesWrap.addEventListener('click', (event) => {
                 const src = (event.target as HTMLImageElement).getAttribute('src');
                 if (src) {
                     bigImage.setAttribute('src', src);
+                }
+            });
+
+            const addDeleteButton = <HTMLButtonElement>document.querySelector('button[class="add_delete"]');
+            addDeleteButton.addEventListener('click', () => {
+                const cartProducts = this.service.getProducts();
+                const result = cartProducts.find((element) => element.id === product.id);
+                if (result) {
+                    this.service.delete(productId);
+                    addDeleteButton.innerHTML = 'ADD TO CART';
+                } else {
+                    this.service.add(product);
+                    addDeleteButton.innerHTML = 'DROP FROM CART';
                 }
             });
         } else {

@@ -1,18 +1,15 @@
 import { Card } from '../../components/card/card.view';
-import { CartService } from '../../service/cart.service';
-import { ProductDetailsController } from './pageProductDetails.controller';
+import { CatalogController } from '../../controller/catalog.controller';
 import './pageProductDetails.style.css';
 
 export class ProductDetails {
     private readonly id: string;
-    private controller: ProductDetailsController;
     private card: Card;
-    private service: CartService;
+    private controller: CatalogController;
     constructor(id: string) {
         this.id = id;
-        this.controller = new ProductDetailsController();
+        this.controller = new CatalogController();
         this.card = new Card('descriptionsWrap');
-        this.service = new CartService();
     }
 
     public render(productId: number): void {
@@ -73,7 +70,7 @@ export class ProductDetails {
             this.card.renderCard('Category:', `<div class="description">${product.category}</div>`);
 
             let text = 'ADD TO CART';
-            const cartProducts = this.service.getProducts();
+            const cartProducts = this.controller.getProducts();
             const result = cartProducts.find((element) => element.id === product.id);
 
             if (result) {
@@ -93,13 +90,13 @@ export class ProductDetails {
 
             const addDeleteButton = <HTMLButtonElement>document.querySelector('button[class="add_delete"]');
             addDeleteButton.addEventListener('click', () => {
-                const cartProducts = this.service.getProducts();
+                const cartProducts = this.controller.getProducts();
                 const result = cartProducts.find((element) => element.id === product.id);
                 if (result) {
-                    this.service.delete(productId);
+                    this.controller.delete(productId);
                     addDeleteButton.innerHTML = 'ADD TO CART';
                 } else {
-                    this.service.add(product);
+                    this.controller.add(product);
                     addDeleteButton.innerHTML = 'DROP FROM CART';
                 }
             });

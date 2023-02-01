@@ -1,7 +1,7 @@
 import { Product, ProductModel } from '../../model/product.model';
 import { Options } from '../../components/listCard/listCard.view';
 import { sortASC, sortDESC } from '../../utils/sort';
-import { CartModel } from '../../model/cart.model';
+import { CartService } from '../../service/cart.service';
 
 export interface Range {
     min?: number;
@@ -10,22 +10,26 @@ export interface Range {
 
 export class CatalogController {
     private model: ProductModel;
-    private cartModel: CartModel;
+    private service: CartService;
     constructor() {
         this.model = new ProductModel();
-        this.cartModel = new CartModel();
+        this.service = new CartService();
     }
 
     public getAll(): Product[] {
         return this.model.getAll();
     }
 
+    public getProducts(): Product[] {
+        return this.service.getProducts();
+    }
+
     public add(product: Product): void {
-        this.cartModel.add(product);
+        this.service.add(product);
     }
 
     public delete(id: number): void {
-        this.cartModel.delete(id);
+        this.service.delete(id);
     }
 
     public getCategory(products: Product[]): Options[] {

@@ -19,6 +19,7 @@ export class Cart {
         const summary = <HTMLDivElement>document.createElement('div');
         cartWrap.id = 'cartWrap';
         cartWrap.appendChild(summary);
+        body.appendChild(cartWrap);
 
         cartWrap.innerHTML = `<div class="productsInCart">
         <div class="productsTitle">
@@ -42,7 +43,6 @@ export class Cart {
         <input type="search" id="search" placeholder="Enter promo code">
         <button>BUY NOW</button>
         </div>`;
-        body.appendChild(cartWrap);
         this.card.renderCard('Summary', content);
     }
 }

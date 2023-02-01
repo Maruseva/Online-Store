@@ -43,7 +43,6 @@
     width: 90px;
     border: solid 1px #ff9800;
     border-radius: 10px;
-    margin: 5px;
     cursor: pointer;
 }
 
@@ -53,7 +52,6 @@
     object-fit: cover;
     border: solid 1px #ff9800;
     border-radius: 10px;
-    margin: 5px;
 }
 
 #descriptionsWrap {
@@ -67,7 +65,6 @@
 .priceWrap {
     display: flex;
     flex-direction: column;
-    margin: 5px;
 }
 
 .priceWrap > span {

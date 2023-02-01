@@ -8,6 +8,6 @@ export class CartModel {
     }
 
     public delete(id: number): void {
-        this.cart.filter((element) => element.id !== id);
+        this.cart = this.cart.filter((element) => element.id !== id);
     }
 }

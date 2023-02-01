@@ -15,7 +15,7 @@ export class ProductInRow {
         wrap.innerHTML = `<div class="number">${number}</div>
         <img src="${productsCart.images[0]}">
         <div class="description">
-            <div class="title">${productsCart.title}</div>
+            <div class="productInRow__title">${productsCart.title}</div>
             <p>${productsCart.description}</p>
             <div class="about"><span>Rating: ${productsCart.rating}</span><span>Discount: ${productsCart.discountPercentage}</span></div>
         </div>

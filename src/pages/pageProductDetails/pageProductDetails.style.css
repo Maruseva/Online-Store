@@ -86,3 +86,13 @@
     background: #9a3535;
     color: #f6deb3;
 }
+
+.not-found {
+    color: #ff9800;
+    font-size: 40px;
+    padding-top: 40px;
+}
+
+.not-found > span {
+    color: red;
+}

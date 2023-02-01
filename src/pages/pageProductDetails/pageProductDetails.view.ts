@@ -12,7 +12,7 @@ export class ProductDetails {
         this.card = new Card('descriptionsWrap');
     }
 
-    public render(): void {
+    public render(productId: number): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
         const main = <HTMLElement>document.createElement('div');
         const breadcrumbs = <HTMLDivElement>document.createElement('div');
@@ -42,7 +42,7 @@ export class ProductDetails {
         main.appendChild(item);
         body.appendChild(main);
 
-        const product = this.controller.getItemById(1);
+        const product = this.controller.getItemById(productId);
         if (product) {
             breadcrumbs.innerHTML = `STORE <span>>></span> 
         ${product.category.toLocaleUpperCase()} <span>>></span>
@@ -79,6 +79,9 @@ export class ProductDetails {
                     bigImage.setAttribute('src', src);
                 }
             });
+        } else {
+            main.innerHTML = `<div class="not-found">Product number
+            <span>${productId}</span> not found</div>`;
         }
     }
 }

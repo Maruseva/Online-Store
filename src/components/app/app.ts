@@ -1,23 +1,15 @@
-import { Footer } from '../footer/footer.view';
-import { HeaderView } from '../header/header.view';
-import { Catalog } from '../../pages/catalog/catalog.view';
+import { Router } from '../../router/router';
 
 export class App {
     private readonly id: string;
-    private header: HeaderView;
-    private catalog: Catalog;
-    private footer: Footer;
+    private router: Router;
 
     constructor(id: string) {
         this.id = id;
-        this.header = new HeaderView(this.id);
-        this.catalog = new Catalog(this.id);
-        this.footer = new Footer(this.id);
+        this.router = new Router(this.id);
     }
 
     public run(): void {
-        this.header.render();
-        this.catalog.render();
-        this.footer.render();
+        this.router.run();
     }
 }

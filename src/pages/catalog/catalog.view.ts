@@ -10,6 +10,7 @@ import { getMinMax } from '../../utils/sort';
 import { ProductDetailsController } from '../pageProductDetails/pageProductDetails.controller';
 
 export class Catalog {
+    public state: boolean = false;
     private readonly id: string;
     private controller: CatalogController;
     private list: ListCard;
@@ -86,6 +87,8 @@ export class Catalog {
                 changePagesUrl(url, 'product-details', id);
             }
         });
+
+        this.state = true;
 
         this.renderFilters();
         this.renderCatalog();
@@ -239,6 +242,9 @@ export class Catalog {
         const urlValuePriceMin = getUrlValue(url, 'price-min');
         const urlValuePriceMax = getUrlValue(url, 'price-max');
 
+        const texts = document.querySelectorAll('span[class="slider_text_not_found"]');
+        texts.forEach((element) => (element.innerHTML = '&#8660;'));
+
         const inputPriceMin = <HTMLInputElement>document.querySelector('input[class=price_min]');
         const inputPriceMax = <HTMLInputElement>document.querySelector('input[class=price_max]');
         const textMin = <HTMLSpanElement>document.getElementById('price_text_min');
@@ -303,6 +309,16 @@ export class Catalog {
                 this.product.renderBigCard(element);
             }
         });
+
+        if (!products.length) {
+            const catalogProducts = <HTMLDivElement>document.getElementById('catalogProducts');
+            catalogProducts.innerHTML = '<div class="not-found">No products found</div>';
+            textMin.innerHTML = '';
+            textMax.innerHTML = '';
+            textMinStock.innerHTML = '';
+            textMaxStock.innerHTML = '';
+            texts.forEach((element) => (element.innerHTML = 'NOT FOUND'));
+        }
 
         const catalogHeadText = document.getElementsByClassName('catalogHead_text');
         catalogHeadText[0].innerHTML = `<span>Found: ${products.length}</span>`;

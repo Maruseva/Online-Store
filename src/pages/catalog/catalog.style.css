@@ -22,6 +22,7 @@ main {
 .catalog {
     border: solid 3px #ff9800;
     border-radius: 10px;
+    width: 100%;
 }
 
 #catalogProducts {
@@ -70,4 +71,10 @@ main {
     padding: 3px;
     width: 50px;
     cursor: pointer;
+}
+
+.not-found {
+    color: #ff9800;
+    font-size: 40px;
+    padding-top: 40px;
 }

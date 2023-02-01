@@ -8,7 +8,6 @@ import { SliderCard } from '../../components/sliderCard/sliderCard.view';
 import { changePagesUrl, changeUrl, deleteParamsUrl, getAllParams, getUrlValue, setParamsUrl } from '../../utils/url';
 import { getMinMax } from '../../utils/sort';
 import { ProductDetailsController } from '../pageProductDetails/pageProductDetails.controller';
-import { CartService } from '../../service/cart.service';
 
 export class Catalog {
     public state: boolean = false;
@@ -18,7 +17,6 @@ export class Catalog {
     private slider: SliderCard;
     private product: ProductCard;
     private productDetails: ProductDetailsController;
-    private service: CartService;
     constructor(id: string) {
         this.id = id;
         this.controller = new CatalogController();
@@ -26,7 +24,6 @@ export class Catalog {
         this.slider = new SliderCard('menu');
         this.product = new ProductCard('catalogProducts');
         this.productDetails = new ProductDetailsController();
-        this.service = new CartService();
     }
     public render(): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
@@ -84,7 +81,7 @@ export class Catalog {
             if (id && target.className === 'add_to_cart') {
                 const product = this.productDetails.getItemById(parseInt(id));
                 if (product) {
-                    this.service.add(product);
+                    this.controller.add(product);
                 }
             } else if (id) {
                 changePagesUrl(url, 'product-details', id);

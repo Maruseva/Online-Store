@@ -30,9 +30,11 @@ export class Cart {
         <div id="productsRows"></div>
       </div>`;
 
-        productsCart.forEach((element, index) => {
-            this.productInRow.render(element, index + 1);
-        });
+        if (productsCart.length) {
+            productsCart.forEach((element, index) => {
+                this.productInRow.render(element, index + 1);
+            });
+        }
 
         const content = `<div class="content_wrap">
         <p>Products: <span>4</span></p>
@@ -40,8 +42,7 @@ export class Cart {
         <input type="search" id="search" placeholder="Enter promo code">
         <button>BUY NOW</button>
         </div>`;
-
-        this.card.renderCard('Summary', content);
         body.appendChild(cartWrap);
+        this.card.renderCard('Summary', content);
     }
 }

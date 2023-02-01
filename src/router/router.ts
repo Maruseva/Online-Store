@@ -4,6 +4,7 @@ import { ProductDetails } from '../pages/pageProductDetails/pageProductDetails.v
 import { getPathname } from '../utils/url';
 import { HeaderView } from '../components/header/header.view';
 import { Footer } from '../components/footer/footer.view';
+import { Cart } from '../pages/cart/cart.view';
 
 export class Router {
     private readonly id: string;
@@ -12,6 +13,7 @@ export class Router {
     private details: ProductDetails;
     private header: HeaderView;
     private footer: Footer;
+    private cart: Cart;
     constructor(id: string) {
         this.id = id;
         this.header = new HeaderView(this.id);
@@ -19,6 +21,7 @@ export class Router {
         this.details = new ProductDetails(this.id);
         this.pageNotFound = new PageNotFound(this.id);
         this.footer = new Footer(this.id);
+        this.cart = new Cart(this.id);
     }
     render(): void {
         this.header.render();
@@ -33,7 +36,7 @@ export class Router {
             const numberProduct = parseInt(value[2]);
             this.details.render(numberProduct);
         } else if (value[1] === 'cart') {
-            // пока нет
+            this.cart.render([]);
         } else {
             this.pageNotFound.render();
         }

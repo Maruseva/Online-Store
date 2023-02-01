@@ -5,6 +5,7 @@ import { getPathname } from '../utils/url';
 import { HeaderView } from '../components/header/header.view';
 import { Footer } from '../components/footer/footer.view';
 import { Cart } from '../pages/cart/cart.view';
+import { CartService } from '../service/cart.service';
 
 export class Router {
     private readonly id: string;
@@ -14,6 +15,7 @@ export class Router {
     private header: HeaderView;
     private footer: Footer;
     private cart: Cart;
+    private service: CartService;
     constructor(id: string) {
         this.id = id;
         this.header = new HeaderView(this.id);
@@ -22,6 +24,7 @@ export class Router {
         this.pageNotFound = new PageNotFound(this.id);
         this.footer = new Footer(this.id);
         this.cart = new Cart(this.id);
+        this.service = new CartService();
     }
     render(): void {
         this.header.render();
@@ -36,7 +39,8 @@ export class Router {
             const numberProduct = parseInt(value[2]);
             this.details.render(numberProduct);
         } else if (value[1] === 'cart') {
-            this.cart.render([]);
+            const products = this.service.getProducts();
+            this.cart.render(products);
         } else {
             this.pageNotFound.render();
         }

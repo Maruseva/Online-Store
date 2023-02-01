@@ -26,8 +26,7 @@ export class CartService {
     }
 
     public delete(id: number): void {
-        const products = this.getProducts();
         this.cartModel.delete(id);
-        this.updateLocalStorage(products);
+        this.updateLocalStorage(this.cartModel.cart);
     }
 }

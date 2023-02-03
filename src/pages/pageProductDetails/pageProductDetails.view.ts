@@ -69,13 +69,10 @@ export class ProductDetails {
             this.card.renderCard('Brand:', `<div class="description">${product.brand}</div>`);
             this.card.renderCard('Category:', `<div class="description">${product.category}</div>`);
 
-            let text = 'ADD TO CART';
             const cartProducts = this.controller.getProducts();
             const result = cartProducts.find((element) => element.id === product.id);
 
-            if (result) {
-                text = 'DROP FROM CART';
-            }
+            const text = result ? 'DROP FROM CART' : 'ADD TO CART';
 
             priceWrap.innerHTML = `<span>&#8364;${product.price}</span>
         <button class="add_delete">${text}</button>
@@ -89,15 +86,14 @@ export class ProductDetails {
             });
 
             const addDeleteButton = <HTMLButtonElement>document.querySelector('button[class="add_delete"]');
-            addDeleteButton.addEventListener('click', () => {
-                const cartProducts = this.controller.getProducts();
-                const result = cartProducts.find((element) => element.id === product.id);
-                if (result) {
+            addDeleteButton.addEventListener('click', (event) => {
+                const element = event.target as HTMLButtonElement;
+                if (element.innerText !== 'ADD TO CART') {
                     this.controller.delete(productId);
-                    addDeleteButton.innerHTML = 'ADD TO CART';
+                    addDeleteButton.innerText = 'ADD TO CART';
                 } else {
                     this.controller.add(product);
-                    addDeleteButton.innerHTML = 'DROP FROM CART';
+                    addDeleteButton.innerText = 'DROP FROM CART';
                 }
             });
         } else {

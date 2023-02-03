@@ -306,12 +306,13 @@ export class Catalog {
         }
 
         const urlValueViewMode = getUrlValue(url, 'view-mode');
-
+        const cart = this.controller.getProducts();
         products.forEach((element: Product) => {
+            const isExistInCart = cart.some((cartElement) => cartElement.id === element.id);
             if (urlValueViewMode === 'small') {
-                this.product.renderSmallCard(element);
+                this.product.renderSmallCard(element, isExistInCart);
             } else {
-                this.product.renderBigCard(element);
+                this.product.renderBigCard(element, isExistInCart);
             }
         });
 

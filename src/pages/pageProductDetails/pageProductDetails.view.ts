@@ -1,4 +1,5 @@
 import { Card } from '../../components/card/card.view';
+import { HeaderView } from '../../components/header/header.view';
 import { CatalogController } from '../../controller/catalog.controller';
 import './pageProductDetails.style.css';
 
@@ -6,10 +7,12 @@ export class ProductDetails {
     private readonly id: string;
     private card: Card;
     private controller: CatalogController;
+    private header: HeaderView;
     constructor(id: string) {
         this.id = id;
         this.controller = new CatalogController();
         this.card = new Card('descriptionsWrap');
+        this.header = new HeaderView(this.id);
     }
 
     public render(productId: number): void {
@@ -95,6 +98,8 @@ export class ProductDetails {
                     this.controller.add(product);
                     addDeleteButton.innerText = 'DROP FROM CART';
                 }
+                const newCart = this.controller.getProducts();
+                this.header.update(newCart);
             });
         } else {
             main.innerHTML = `<div class="not-found">Product number

@@ -94,12 +94,12 @@ export class ProductDetails {
                 if (element.innerText !== 'ADD TO CART') {
                     this.controller.delete(productId);
                     addDeleteButton.innerText = 'ADD TO CART';
-                    this.header.update();
                 } else {
                     this.controller.add(product);
                     addDeleteButton.innerText = 'DROP FROM CART';
-                    this.header.update();
                 }
+                const newCart = this.controller.getProducts();
+                this.header.update(newCart);
             });
         } else {
             main.innerHTML = `<div class="not-found">Product number

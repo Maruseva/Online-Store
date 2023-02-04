@@ -87,12 +87,12 @@ export class Catalog {
                     if (result) {
                         this.controller.delete(parseInt(id));
                         target.innerHTML = 'ADD TO CART';
-                        this.header.update();
                     } else {
                         this.controller.add(product);
                         target.innerHTML = 'DROP FROM CART';
-                        this.header.update();
                     }
+                    const newCart = this.controller.getProducts();
+                    this.header.update(newCart);
                 }
             } else if (id) {
                 changePagesUrl(url, 'product-details', id);

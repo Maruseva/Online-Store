@@ -53,6 +53,6 @@ button {
 
 .card_itemContent_small > .card_button {
     position: relative;
-    top: 110px;
+    top: 106px;
     z-index: 1;
 }

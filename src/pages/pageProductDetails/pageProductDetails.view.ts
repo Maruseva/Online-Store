@@ -1,15 +1,18 @@
 import { Card } from '../../components/card/card.view';
-import { ProductDetailsController } from './pageProductDetails.controller';
+import { HeaderView } from '../../components/header/header.view';
+import { CatalogController } from '../../controller/catalog.controller';
 import './pageProductDetails.style.css';
 
 export class ProductDetails {
     private readonly id: string;
-    private controller: ProductDetailsController;
     private card: Card;
+    private controller: CatalogController;
+    private header: HeaderView;
     constructor(id: string) {
         this.id = id;
-        this.controller = new ProductDetailsController();
+        this.controller = new CatalogController();
         this.card = new Card('descriptionsWrap');
+        this.header = new HeaderView(this.id);
     }
 
     public render(productId: number): void {
@@ -69,14 +72,33 @@ export class ProductDetails {
             this.card.renderCard('Brand:', `<div class="description">${product.brand}</div>`);
             this.card.renderCard('Category:', `<div class="description">${product.category}</div>`);
 
+            const cartProducts = this.controller.getProducts();
+            const result = cartProducts.find((element) => element.id === product.id);
+
+            const text = result ? 'DROP FROM CART' : 'ADD TO CART';
+
             priceWrap.innerHTML = `<span>&#8364;${product.price}</span>
-        <button>ADD TO CART</button>
+        <button class="add_delete">${text}</button>
         <button>BUY NOW</button>`;
 
             imagesWrap.addEventListener('click', (event) => {
                 const src = (event.target as HTMLImageElement).getAttribute('src');
                 if (src) {
                     bigImage.setAttribute('src', src);
+                }
+            });
+
+            const addDeleteButton = <HTMLButtonElement>document.querySelector('button[class="add_delete"]');
+            addDeleteButton.addEventListener('click', (event) => {
+                const element = event.target as HTMLButtonElement;
+                if (element.innerText !== 'ADD TO CART') {
+                    this.controller.delete(productId);
+                    addDeleteButton.innerText = 'ADD TO CART';
+                    this.header.update();
+                } else {
+                    this.controller.add(product);
+                    addDeleteButton.innerText = 'DROP FROM CART';
+                    this.header.update();
                 }
             });
         } else {

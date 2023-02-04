@@ -1,14 +1,12 @@
 import { ProductCard } from '../../components/productCard/productCard.view';
 import { Product } from '../../model/product.model';
-import { CatalogController } from './catalog.controller';
+import { CatalogController } from '../../controller/catalog.controller';
 import { ListCard } from '../../components/listCard/listCard.view';
 import template from './catalog.template.html';
 import './catalog.style.css';
 import { SliderCard } from '../../components/sliderCard/sliderCard.view';
 import { changePagesUrl, changeUrl, deleteParamsUrl, getAllParams, getUrlValue, setParamsUrl } from '../../utils/url';
 import { getMinMax } from '../../utils/sort';
-import { ProductDetailsController } from '../pageProductDetails/pageProductDetails.controller';
-import { CartService } from '../../service/cart.service';
 import { HeaderView } from '../../components/header/header.view';
 
 export class Catalog {
@@ -18,8 +16,7 @@ export class Catalog {
     private list: ListCard;
     private slider: SliderCard;
     private product: ProductCard;
-    private productDetails: ProductDetailsController;
-    private service: CartService;
+
     header: HeaderView;
     constructor(id: string) {
         this.id = id;
@@ -27,8 +24,6 @@ export class Catalog {
         this.list = new ListCard('menu');
         this.slider = new SliderCard('menu');
         this.product = new ProductCard('catalogProducts');
-        this.productDetails = new ProductDetailsController();
-        this.service = new CartService();
         this.header = new HeaderView(this.id);
     }
     public render(): void {
@@ -85,10 +80,19 @@ export class Catalog {
             const id = card.getAttribute('data-id');
             const url = window.location.origin;
             if (id && target.className === 'add_to_cart') {
-                const product = this.productDetails.getItemById(parseInt(id));
+                const product = this.controller.getItemById(parseInt(id));
+                const cartProducts = this.controller.getProducts();
                 if (product) {
-                    this.service.add(product);
-                    this.header.update();
+                    const result = cartProducts.find((element) => element.id === product.id);
+                    if (result) {
+                        this.controller.delete(parseInt(id));
+                        target.innerHTML = 'ADD TO CART';
+                        this.header.update();
+                    } else {
+                        this.controller.add(product);
+                        target.innerHTML = 'DROP FROM CART';
+                        this.header.update();
+                    }
                 }
             } else if (id) {
                 changePagesUrl(url, 'product-details', id);
@@ -308,12 +312,13 @@ export class Catalog {
         }
 
         const urlValueViewMode = getUrlValue(url, 'view-mode');
-
+        const cart = this.controller.getProducts();
         products.forEach((element: Product) => {
+            const isExistInCart = cart.some((cartElement) => cartElement.id === element.id);
             if (urlValueViewMode === 'small') {
-                this.product.renderSmallCard(element);
+                this.product.renderSmallCard(element, isExistInCart);
             } else {
-                this.product.renderBigCard(element);
+                this.product.renderBigCard(element, isExistInCart);
             }
         });
 

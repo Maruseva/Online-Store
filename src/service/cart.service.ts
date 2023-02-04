@@ -20,9 +20,8 @@ export class CartService {
     }
 
     public add(product: Product): void {
-        const products = this.getProducts();
         this.cartModel.add(product);
-        this.updateLocalStorage(products);
+        this.updateLocalStorage(this.cartModel.cart);
     }
 
     public delete(id: number): void {

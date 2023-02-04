@@ -1,6 +1,7 @@
-import { Product, ProductModel } from '../../model/product.model';
-import { Options } from '../../components/listCard/listCard.view';
-import { sortASC, sortDESC } from '../../utils/sort';
+import { Product, ProductModel } from '../model/product.model';
+import { Options } from '../components/listCard/listCard.view';
+import { sortASC, sortDESC } from '../utils/sort';
+import { CartService } from '../service/cart.service';
 
 export interface Range {
     min?: number;
@@ -9,12 +10,30 @@ export interface Range {
 
 export class CatalogController {
     private model: ProductModel;
+    private service: CartService;
     constructor() {
         this.model = new ProductModel();
+        this.service = new CartService();
     }
 
     public getAll(): Product[] {
         return this.model.getAll();
+    }
+
+    public getItemById(id: number): Product | undefined {
+        return this.model.getItemById(id);
+    }
+
+    public getProducts(): Product[] {
+        return this.service.getProducts();
+    }
+
+    public add(product: Product): void {
+        this.service.add(product);
+    }
+
+    public delete(id: number): void {
+        this.service.delete(id);
     }
 
     public getCategory(products: Product[]): Options[] {

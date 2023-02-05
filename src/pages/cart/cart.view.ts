@@ -70,9 +70,10 @@ export class Cart {
             const span = <HTMLSpanElement>document.querySelector('span[data-page]');
             const atr = span.getAttribute('data-page');
             if (atr) {
-                const page = parseInt(atr);
+                let page = parseInt(atr);
                 if (page > 1) {
-                    span.innerText = (page - 1).toString();
+                    page -= 1;
+                    span.innerText = page.toString();
                     span.setAttribute('data-page', page.toString());
                     this.clearProductsRows();
                     this.renderProductsRows(productsCart);
@@ -84,9 +85,10 @@ export class Cart {
             const span = <HTMLSpanElement>document.querySelector('span[data-page]');
             const atr = span.getAttribute('data-page');
             if (atr) {
-                const page = parseInt(atr);
+                let page = parseInt(atr);
                 if (productsCart.length > parseInt(select.value) * page) {
-                    span.innerText = (page + 1).toString();
+                    page += 1;
+                    span.innerText = page.toString();
                     span.setAttribute('data-page', page.toString());
                     this.clearProductsRows();
                     this.renderProductsRows(productsCart);

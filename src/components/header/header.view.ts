@@ -1,12 +1,11 @@
 import template from './header.template.html';
 import './header.style.css';
 import { changePagesUrl } from '../../utils/url';
-import { Product } from '../../model/product.model';
 import { CartController } from '../../pages/cart/cart.controller';
 
 export class HeaderView {
     private readonly id: string;
-    cartController: CartController;
+    private cartController: CartController;
     constructor(id: string) {
         this.id = id;
         this.cartController = new CartController();
@@ -31,11 +30,13 @@ export class HeaderView {
 
         const products = this.cartController.getProducts();
         if (products.length) {
-            this.update(products);
+            this.update();
         }
     }
 
-    public update(products: Product[]): void {
+    public update(): void {
+        const products = this.cartController.getProducts();
+
         const price = <HTMLSpanElement>document.querySelector('span[class="header_price"]');
         const number = <HTMLDivElement>document.querySelector('div[class="header_numder"]');
 

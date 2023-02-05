@@ -94,8 +94,7 @@ export class Catalog {
                             this.cartController.add(product);
                             target.innerHTML = 'DROP FROM CART';
                         }
-                        const newCart = this.cartController.getProducts();
-                        this.header.update(newCart);
+                        this.header.update();
                     }
                 } else if (id) {
                     changePagesUrl(url, 'product-details', id);

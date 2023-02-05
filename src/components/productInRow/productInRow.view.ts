@@ -11,6 +11,7 @@ export class ProductInRow {
         const cart = <HTMLDivElement>document.getElementById(this.id);
         const wrap = <HTMLDivElement>document.createElement('div');
         wrap.className = 'wrap';
+        wrap.setAttribute('data-id', `${productsCart.id}`);
 
         wrap.innerHTML = `<div class="number">${number}</div>
         <img src="${productsCart.images[0]}">
@@ -21,7 +22,7 @@ export class ProductInRow {
         </div>
         <div class="stock">
             <span>Stock: ${productsCart.stock}</span>
-            <div class="buttons"><button>+</button><span>1</span><button>-</button></div>
+            <div class="buttons"><button class="add_to_cart">+</button><span>1</span><button class="drop_from_cart">-</button></div>
             <span>&#8364;${productsCart.price}</span>
         </div>`;
 

@@ -23,7 +23,7 @@ export class Cart {
         this.header = new HeaderView(this.id);
     }
 
-    render(productsCart: Product[]): void {
+    public render(productsCart: Product[]): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
         const cartWrap = <HTMLDivElement>document.createElement('div');
         const summary = <HTMLDivElement>document.createElement('div');
@@ -34,18 +34,28 @@ export class Cart {
         cartWrap.innerHTML = `<div class="productsInCart">
         <div class="productsTitle">
           <span>Products In Cart</span>
-          <div class="page"><div>LIMIT: 1</div>
-              <div class="page_buttons">PAGE: <button><</button><span>1</span><button>></button></div>
+          <div class="page"><div class="productsTitle_limit"><span>LIMIT:</span> <select class="productsTitle_select" size="1" multiple></select></div>
+              <div class="page_buttons">PAGE: <button class="previous"><</button><span data-page="1">1</span><button class="next">></button></div>
           </div>
         </div>
         <div id="productsRows"></div>
       </div>`;
 
-        if (productsCart.length) {
-            productsCart.forEach((element, index) => {
-                this.productInRow.render(element, index + 1);
-            });
-        }
+        const select = <HTMLSelectElement>document.querySelector('select.productsTitle_select');
+
+        productsCart.forEach((element, index) => {
+            const option = <HTMLOptionElement>document.createElement('option');
+            option.value = (index + 1).toString();
+            option.innerText = (index + 1).toString();
+            select.appendChild(option);
+        });
+
+        const numberProductsInPage = 3;
+        select.value =
+            productsCart.length < numberProductsInPage
+                ? productsCart.length.toString()
+                : numberProductsInPage.toString();
+        this.renderProductsRows(productsCart);
 
         const priceAll = productsCart.reduce((sum, element) => sum + element.price, 0);
 
@@ -56,6 +66,45 @@ export class Cart {
         <button>BUY NOW</button>
         </div>`;
         this.card.renderCard('Summary', content);
+
+        select.addEventListener('change', (event) => {
+            select.value = (event.target as HTMLSelectElement).value;
+            this.clearProductsRows();
+            this.renderProductsRows(productsCart);
+        });
+
+        const previous = <HTMLButtonElement>document.querySelector('button.previous');
+        const next = <HTMLButtonElement>document.querySelector('button.next');
+
+        previous.addEventListener('click', () => {
+            const span = <HTMLSpanElement>document.querySelector('span[data-page]');
+            const atr = span.getAttribute('data-page');
+            if (atr) {
+                let page = parseInt(atr);
+                if (page > 1) {
+                    page -= 1;
+                    span.innerText = page.toString();
+                    span.setAttribute('data-page', page.toString());
+                    this.clearProductsRows();
+                    this.renderProductsRows(productsCart);
+                }
+            }
+        });
+
+        next.addEventListener('click', () => {
+            const span = <HTMLSpanElement>document.querySelector('span[data-page]');
+            const atr = span.getAttribute('data-page');
+            if (atr) {
+                let page = parseInt(atr);
+                if (productsCart.length > parseInt(select.value) * page) {
+                    page += 1;
+                    span.innerText = page.toString();
+                    span.setAttribute('data-page', page.toString());
+                    this.clearProductsRows();
+                    this.renderProductsRows(productsCart);
+                }
+            }
+        });
 
         const productsInRows = <HTMLImageElement>document.getElementById('productsRows');
         productsInRows.addEventListener('click', (event) => {
@@ -76,5 +125,28 @@ export class Cart {
                 changePagesUrl(url, 'product-details', id);
             }
         });
+    }
+
+    public renderProductsRows(productsCart: Product[]): void {
+        const select = <HTMLSelectElement>document.querySelector('select.productsTitle_select');
+        const limit = parseInt(select.value);
+        const span = <HTMLSpanElement>document.querySelector('span[data-page]');
+        const atr = span.getAttribute('data-page');
+        if (atr) {
+            const page = parseInt(atr);
+
+            const productsInPage = productsCart.slice(limit * (page - 1), limit * page);
+            let index = limit * (page - 1) + 1;
+
+            productsInPage.forEach((element) => {
+                this.productInRow.render(element, index);
+                index++;
+            });
+        }
+    }
+
+    public clearProductsRows(): void {
+        const productsRows = <HTMLDivElement>document.getElementById('productsRows');
+        productsRows.innerHTML = '';
     }
 }

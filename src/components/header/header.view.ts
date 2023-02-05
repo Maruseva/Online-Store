@@ -2,14 +2,14 @@ import template from './header.template.html';
 import './header.style.css';
 import { changePagesUrl } from '../../utils/url';
 import { Product } from '../../model/product.model';
-import { CatalogController } from '../../controller/catalog.controller';
+import { CartController } from '../../pages/cart/cart.controller';
 
 export class HeaderView {
     private readonly id: string;
-    private controller: CatalogController;
+    cartController: CartController;
     constructor(id: string) {
         this.id = id;
-        this.controller = new CatalogController();
+        this.cartController = new CartController();
     }
     public render(): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
@@ -29,7 +29,7 @@ export class HeaderView {
             changePagesUrl(url, 'cart');
         });
 
-        const products = this.controller.getProducts();
+        const products = this.cartController.getProducts();
         if (products.length) {
             this.update(products);
         }

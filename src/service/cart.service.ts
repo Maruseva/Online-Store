@@ -5,13 +5,13 @@ export class CartService {
     private cartModel: CartModel;
     constructor() {
         this.cartModel = new CartModel();
-    }
-
-    public getProducts(): Product[] {
         const storage = localStorage.getItem('products');
         if (storage) {
             this.cartModel.cart = JSON.parse(storage);
         }
+    }
+
+    public getProducts(): Product[] {
         return this.cartModel.cart;
     }
 

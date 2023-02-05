@@ -8,6 +8,7 @@ import { SliderCard } from '../../components/sliderCard/sliderCard.view';
 import { changePagesUrl, changeUrl, deleteParamsUrl, getAllParams, getUrlValue, setParamsUrl } from '../../utils/url';
 import { getMinMax } from '../../utils/sort';
 import { HeaderView } from '../../components/header/header.view';
+import { CartController } from '../cart/cart.controller';
 
 export class Catalog {
     public state: boolean = false;
@@ -16,8 +17,8 @@ export class Catalog {
     private list: ListCard;
     private slider: SliderCard;
     private product: ProductCard;
-
-    header: HeaderView;
+    private header: HeaderView;
+    private cartController: CartController;
     constructor(id: string) {
         this.id = id;
         this.controller = new CatalogController();
@@ -25,6 +26,7 @@ export class Catalog {
         this.slider = new SliderCard('menu');
         this.product = new ProductCard('catalogProducts');
         this.header = new HeaderView(this.id);
+        this.cartController = new CartController();
     }
     public render(): void {
         const body = <HTMLBodyElement>document.getElementById(this.id);
@@ -82,17 +84,17 @@ export class Catalog {
                 const url = window.location.origin;
                 if (id && target.className === 'add_to_cart') {
                     const product = this.controller.getItemById(parseInt(id));
-                    const cartProducts = this.controller.getProducts();
+                    const cartProducts = this.cartController.getProducts();
                     if (product) {
                         const result = cartProducts.find((element) => element.id === product.id);
                         if (result) {
-                            this.controller.delete(parseInt(id));
+                            this.cartController.delete(parseInt(id));
                             target.innerHTML = 'ADD TO CART';
                         } else {
-                            this.controller.add(product);
+                            this.cartController.add(product);
                             target.innerHTML = 'DROP FROM CART';
                         }
-                        const newCart = this.controller.getProducts();
+                        const newCart = this.cartController.getProducts();
                         this.header.update(newCart);
                     }
                 } else if (id) {
@@ -314,7 +316,7 @@ export class Catalog {
         }
 
         const urlValueViewMode = getUrlValue(url, 'view-mode');
-        const cart = this.controller.getProducts();
+        const cart = this.cartController.getProducts();
         products.forEach((element: Product) => {
             const isExistInCart = cart.some((cartElement) => cartElement.id === element.id);
             if (urlValueViewMode === 'small') {

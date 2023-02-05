@@ -1,6 +1,7 @@
 import { Card } from '../../components/card/card.view';
 import { HeaderView } from '../../components/header/header.view';
 import { CatalogController } from '../../controller/catalog.controller';
+import { CartController } from '../cart/cart.controller';
 import './pageProductDetails.style.css';
 
 export class ProductDetails {
@@ -8,11 +9,13 @@ export class ProductDetails {
     private card: Card;
     private controller: CatalogController;
     private header: HeaderView;
+    private cartController: CartController;
     constructor(id: string) {
         this.id = id;
         this.controller = new CatalogController();
         this.card = new Card('descriptionsWrap');
         this.header = new HeaderView(this.id);
+        this.cartController = new CartController();
     }
 
     public render(productId: number): void {
@@ -72,7 +75,7 @@ export class ProductDetails {
             this.card.renderCard('Brand:', `<div class="description">${product.brand}</div>`);
             this.card.renderCard('Category:', `<div class="description">${product.category}</div>`);
 
-            const cartProducts = this.controller.getProducts();
+            const cartProducts = this.cartController.getProducts();
             const result = cartProducts.find((element) => element.id === product.id);
 
             const text = result ? 'DROP FROM CART' : 'ADD TO CART';
@@ -92,13 +95,13 @@ export class ProductDetails {
             addDeleteButton.addEventListener('click', (event) => {
                 const element = event.target as HTMLButtonElement;
                 if (element.innerText !== 'ADD TO CART') {
-                    this.controller.delete(productId);
+                    this.cartController.delete(productId);
                     addDeleteButton.innerText = 'ADD TO CART';
                 } else {
-                    this.controller.add(product);
+                    this.cartController.add(product);
                     addDeleteButton.innerText = 'DROP FROM CART';
                 }
-                const newCart = this.controller.getProducts();
+                const newCart = this.cartController.getProducts();
                 this.header.update(newCart);
             });
         } else {

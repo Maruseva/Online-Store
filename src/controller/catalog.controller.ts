@@ -24,18 +24,6 @@ export class CatalogController {
         return this.model.getItemById(id);
     }
 
-    public getProducts(): Product[] {
-        return this.service.getProducts();
-    }
-
-    public add(product: Product): void {
-        this.service.add(product);
-    }
-
-    public delete(id: number): void {
-        this.service.delete(id);
-    }
-
     public getCategory(products: Product[]): Options[] {
         const options: Options[] = [];
 

@@ -79,25 +79,27 @@ export class Catalog {
         catalogProducts.addEventListener('click', (event) => {
             const target = event.target as HTMLElement;
             const card = target.closest('div[class="card_item"]') as HTMLDivElement;
-            const id = card.getAttribute('data-id');
-            const url = window.location.origin;
-            if (id && target.className === 'add_to_cart') {
-                const product = this.controller.getItemById(parseInt(id));
-                const cartProducts = this.cartController.getProducts();
-                if (product) {
-                    const result = cartProducts.find((element) => element.id === product.id);
-                    if (result) {
-                        this.cartController.delete(parseInt(id));
-                        target.innerHTML = 'ADD TO CART';
-                    } else {
-                        this.cartController.add(product);
-                        target.innerHTML = 'DROP FROM CART';
+            if (card) {
+                const id = card.getAttribute('data-id');
+                const url = window.location.origin;
+                if (id && target.className === 'add_to_cart') {
+                    const product = this.controller.getItemById(parseInt(id));
+                    const cartProducts = this.cartController.getProducts();
+                    if (product) {
+                        const result = cartProducts.find((element) => element.id === product.id);
+                        if (result) {
+                            this.cartController.delete(parseInt(id));
+                            target.innerHTML = 'ADD TO CART';
+                        } else {
+                            this.cartController.add(product);
+                            target.innerHTML = 'DROP FROM CART';
+                        }
+                        const newCart = this.cartController.getProducts();
+                        this.header.update(newCart);
                     }
-                    const newCart = this.cartController.getProducts();
-                    this.header.update(newCart);
+                } else if (id) {
+                    changePagesUrl(url, 'product-details', id);
                 }
-            } else if (id) {
-                changePagesUrl(url, 'product-details', id);
             }
         });
 

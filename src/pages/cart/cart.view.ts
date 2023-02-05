@@ -21,31 +21,31 @@ export class Cart {
         cartWrap.appendChild(summary);
         body.appendChild(cartWrap);
 
-        let page = 1;
-
         cartWrap.innerHTML = `<div class="productsInCart">
         <div class="productsTitle">
           <span>Products In Cart</span>
           <div class="page"><div class="productsTitle_limit"><span>LIMIT:</span> <select class="productsTitle_select" size="1" multiple></select></div>
-              <div class="page_buttons">PAGE: <button class="previous"><</button><span data_page="${page}">${page}</span><button class="next">></button></div>
+              <div class="page_buttons">PAGE: <button class="previous"><</button><span data-page="1">1</span><button class="next">></button></div>
           </div>
         </div>
         <div id="productsRows"></div>
       </div>`;
 
-        const select = <HTMLSelectElement>document.querySelector('select[class="productsTitle_select"]');
+        const select = <HTMLSelectElement>document.querySelector('select.productsTitle_select');
 
-        if (productsCart.length) {
-            productsCart.forEach((element, index) => {
-                const option = <HTMLOptionElement>document.createElement('option');
-                option.value = (index + 1).toString();
-                option.innerText = (index + 1).toString();
-                select.appendChild(option);
-            });
+        productsCart.forEach((element, index) => {
+            const option = <HTMLOptionElement>document.createElement('option');
+            option.value = (index + 1).toString();
+            option.innerText = (index + 1).toString();
+            select.appendChild(option);
+        });
 
-            select.value = productsCart.length <= 2 ? productsCart.length.toString() : '3';
-            this.renderProductsRows(productsCart);
-        }
+        const numberProductsInPage = 3;
+        select.value =
+            productsCart.length < numberProductsInPage
+                ? productsCart.length.toString()
+                : numberProductsInPage.toString();
+        this.renderProductsRows(productsCart);
 
         const priceAll = productsCart.reduce((sum, element) => sum + element.price, 0);
 
@@ -63,44 +63,54 @@ export class Cart {
             this.renderProductsRows(productsCart);
         });
 
-        const previous = <HTMLButtonElement>document.querySelector('button[class="previous"]');
-        const next = <HTMLButtonElement>document.querySelector('button[class="next"]');
+        const previous = <HTMLButtonElement>document.querySelector('button.previous');
+        const next = <HTMLButtonElement>document.querySelector('button.next');
 
         previous.addEventListener('click', () => {
-            if (page > 1) {
-                page -= 1;
-                const span = <HTMLSpanElement>document.querySelector('span[data_page]');
-                span.innerText = page.toString();
-                span.setAttribute('data_page', page.toString());
-                this.clearProductsRows();
-                this.renderProductsRows(productsCart);
+            const span = <HTMLSpanElement>document.querySelector('span[data-page]');
+            const atr = span.getAttribute('data-page');
+            if (atr) {
+                let page = parseInt(atr);
+                if (page > 1) {
+                    page -= 1;
+                    span.innerText = page.toString();
+                    span.setAttribute('data-page', page.toString());
+                    this.clearProductsRows();
+                    this.renderProductsRows(productsCart);
+                }
             }
         });
 
         next.addEventListener('click', () => {
-            if (productsCart.length > parseInt(select.value) * page) {
-                page += 1;
-                const span = <HTMLSpanElement>document.querySelector('span[data_page]');
-                span.innerText = page.toString();
-                span.setAttribute('data_page', page.toString());
-                this.clearProductsRows();
-                this.renderProductsRows(productsCart);
+            const span = <HTMLSpanElement>document.querySelector('span[data-page]');
+            const atr = span.getAttribute('data-page');
+            if (atr) {
+                let page = parseInt(atr);
+                if (productsCart.length > parseInt(select.value) * page) {
+                    page += 1;
+                    span.innerText = page.toString();
+                    span.setAttribute('data-page', page.toString());
+                    this.clearProductsRows();
+                    this.renderProductsRows(productsCart);
+                }
             }
         });
     }
 
     public renderProductsRows(productsCart: Product[]): void {
-        const select = <HTMLSelectElement>document.querySelector('select[class="productsTitle_select"]');
+        const select = <HTMLSelectElement>document.querySelector('select.productsTitle_select');
         const limit = parseInt(select.value);
-        const span = <HTMLSpanElement>document.querySelector('span[data_page]');
-        const atr = span.getAttribute('data_page');
+        const span = <HTMLSpanElement>document.querySelector('span[data-page]');
+        const atr = span.getAttribute('data-page');
         if (atr) {
             const page = parseInt(atr);
 
-            productsCart.forEach((element, index) => {
-                if (limit * (page - 1) <= index && index < limit * page) {
-                    this.productInRow.render(element, index + 1);
-                }
+            const productsInPage = productsCart.slice(limit * (page - 1), limit * page);
+            let index = limit * (page - 1) + 1;
+
+            productsInPage.forEach((element) => {
+                this.productInRow.render(element, index);
+                index++;
             });
         }
     }

@@ -37,9 +37,11 @@ export class Cart {
             });
         }
 
+        const priceAll = productsCart.reduce((sum, element) => sum + element.price, 0);
+
         const content = `<div class="content_wrap">
-        <p>Products: <span>4</span></p>
-        <p>Total: <span>&#8364;</span></p>
+        <p>Products: <span>${productsCart.length}</span></p>
+        <p>Total: <span>&#8364;${priceAll}</span></p>
         <input type="search" id="search" placeholder="Enter promo code">
         <button>BUY NOW</button>
         </div>`;

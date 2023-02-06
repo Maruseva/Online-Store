@@ -22,8 +22,8 @@ export class ProductInRow {
         </div>
         <div class="stock">
             <span>Stock: ${productsCart.stock}</span>
-            <div class="buttons"><button class="add_to_cart">+</button><span>1</span><button class="drop_from_cart">-</button></div>
-            <span>&#8364;${productsCart.price}</span>
+            <div class="buttons"><button class="add_to_cart">+</button><span>${productsCart.number}</span><button class="drop_from_cart">-</button></div>
+            <span class="productInRow__price">&#8364;${productsCart.price}</span>
         </div>`;
 
         cart.appendChild(wrap);

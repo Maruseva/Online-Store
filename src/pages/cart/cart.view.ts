@@ -55,7 +55,7 @@ export class Cart {
             productsCart.length < numberProductsInPage
                 ? productsCart.length.toString()
                 : numberProductsInPage.toString();
-        this.renderProductsRows(productsCart);
+        this.renderProductsRows();
 
         const priceAll = productsCart.reduce((sum, element) => sum + element.price, 0);
 
@@ -70,7 +70,7 @@ export class Cart {
         select.addEventListener('change', (event) => {
             select.value = (event.target as HTMLSelectElement).value;
             this.clearProductsRows();
-            this.renderProductsRows(productsCart);
+            this.renderProductsRows();
         });
 
         const previous = <HTMLButtonElement>document.querySelector('button.previous');
@@ -86,7 +86,7 @@ export class Cart {
                     span.innerText = page.toString();
                     span.setAttribute('data-page', page.toString());
                     this.clearProductsRows();
-                    this.renderProductsRows(productsCart);
+                    this.renderProductsRows();
                 }
             }
         });
@@ -101,7 +101,7 @@ export class Cart {
                     span.innerText = page.toString();
                     span.setAttribute('data-page', page.toString());
                     this.clearProductsRows();
-                    this.renderProductsRows(productsCart);
+                    this.renderProductsRows();
                 }
             }
         });
@@ -109,17 +109,21 @@ export class Cart {
         const productsInRows = <HTMLImageElement>document.getElementById('productsRows');
         productsInRows.addEventListener('click', (event) => {
             const target = event.target as HTMLElement;
-            const card = target.closest('div[class="wrap"]') as HTMLDivElement;
+            const card = target.closest('div.wrap') as HTMLDivElement;
             const id = card.getAttribute('data-id');
             if (id && target.className === 'add_to_cart') {
                 const product = this.catalogController.getItemById(parseInt(id));
                 if (product) {
                     this.cartController.add(product);
                     this.header.update();
+                    this.clearProductsRows();
+                    this.renderProductsRows();
                 }
             } else if (id && target.className === 'drop_from_cart') {
                 this.cartController.delete(parseInt(id));
                 this.header.update();
+                this.clearProductsRows();
+                this.renderProductsRows();
             } else if (id) {
                 const url = window.location.origin;
                 changePagesUrl(url, 'product-details', id);
@@ -127,7 +131,30 @@ export class Cart {
         });
     }
 
-    public renderProductsRows(productsCart: Product[]): void {
+    public renderProductsRows(): void {
+        const productsCart = this.cartController.getProducts();
+        const arrId: number[] = [];
+        const productsCartWithoutRepeats = [];
+
+        productsCart.forEach((element) => arrId.push(element.id));
+        const arrIdWithoutRepeats = new Set(arrId);
+        arrIdWithoutRepeats.forEach((element) => {
+            const product = this.catalogController.getItemById(element);
+            productsCartWithoutRepeats.push(product);
+        });
+
+        arrId.forEach((element) => {
+            debugger;
+            productsCartWithoutRepeats.forEach((item) => {
+                if (element === item.id && !item.number) {
+                    item.number = 1;
+                } else if (element === item.id && item.number) {
+                    item.number += 1;
+                }
+            });
+        });
+        console.log(productsCartWithoutRepeats);
+
         const select = <HTMLSelectElement>document.querySelector('select.productsTitle_select');
         const limit = parseInt(select.value);
         const span = <HTMLSpanElement>document.querySelector('span[data-page]');
@@ -135,7 +162,7 @@ export class Cart {
         if (atr) {
             const page = parseInt(atr);
 
-            const productsInPage = productsCart.slice(limit * (page - 1), limit * page);
+            const productsInPage = productsCartWithoutRepeats.slice(limit * (page - 1), limit * page);
             let index = limit * (page - 1) + 1;
 
             productsInPage.forEach((element) => {

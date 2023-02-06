@@ -1,0 +1,68 @@
+.modalWidowWrap {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    background: #181a1cbd;
+    height: 100%;
+    width: 100%;
+}
+
+form {
+    position: relative;
+    top: 25%;
+    left: 25%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    background: #181a1c;
+    border: solid 3px #ff9800;
+    border-radius: 10px;
+    width: 50%;
+    height: 50%;
+    padding: 10px;
+    color: #ff9800;
+    font-size: 20px;
+}
+
+form > input {
+    background: #181a1c;
+    border: solid 1px #ff9800;
+    border-radius: 40px;
+    width: 80%;
+    text-align: center;
+}
+
+.modal_card {
+    box-sizing: border-box;
+    background: #3297db;
+    width: 60%;
+    height: 20%;
+    border: solid 1px #ff9800;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+}
+
+.modal_card > input {
+    border: solid 1px #ff9800;
+    border-radius: 10px;
+    width: 60%;
+    text-align: center;
+}
+
+.modal_card_info > input {
+    border: solid 1px #ff9800;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.submit {
+    background: #40100f;
+    color: #ff9800;
+    width: 30%;
+    cursor: pointer;
+}

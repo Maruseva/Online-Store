@@ -1,4 +1,5 @@
 import { Card } from '../../components/card/card.view';
+import { ModalWidowPay } from '../../components/modalWidowPay/modalWidowPay.view';
 import { ProductInRow } from '../../components/productInRow/productInRow.view';
 import { Product } from '../../model/product.model';
 import './cart.style.css';
@@ -7,10 +8,12 @@ export class Cart {
     private readonly id: string;
     private productInRow: ProductInRow;
     private card: Card;
+    private modalWindow: ModalWidowPay;
     constructor(id: string) {
         this.id = id;
         this.productInRow = new ProductInRow('productsRows');
         this.card = new Card('cartWrap');
+        this.modalWindow = new ModalWidowPay(this.id);
     }
 
     public render(productsCart: Product[]): void {
@@ -53,7 +56,7 @@ export class Cart {
         <p>Products: <span>${productsCart.length}</span></p>
         <p>Total: <span>&#8364;${priceAll}</span></p>
         <input type="search" id="search" placeholder="Enter promo code">
-        <button>BUY NOW</button>
+        <button class="cart__buy">BUY NOW</button>
         </div>`;
         this.card.renderCard('Summary', content);
 
@@ -95,6 +98,9 @@ export class Cart {
                 }
             }
         });
+
+        const buyButton = <HTMLButtonElement>document.querySelector('button.cart__buy');
+        buyButton.addEventListener('click', () => this.modalWindow.render());
     }
 
     public renderProductsRows(productsCart: Product[]): void {

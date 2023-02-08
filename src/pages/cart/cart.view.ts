@@ -7,6 +7,10 @@ import { changePagesUrl } from '../../utils/url';
 import { CartController } from './cart.controller';
 import './cart.style.css';
 
+export interface ProductWithCount extends Product {
+    count: number;
+}
+
 export class Cart {
     private readonly id: string;
     private productInRow: ProductInRow;
@@ -41,6 +45,16 @@ export class Cart {
         <div id="productsRows"></div>
       </div>`;
 
+        const priceAll = productsCart.reduce((sum, element) => sum + element.price, 0);
+
+        const content = `<div class="content_wrap">
+        <p>Products: <span class="cart__count">${productsCart.length}</span></p>
+        <p>Total: <span class="cart__price">&#8364;${priceAll}</span></p>
+        <input type="search" id="search" placeholder="Enter promo code">
+        <button>BUY NOW</button>
+        </div>`;
+        this.card.renderCard('Summary', content);
+
         const select = <HTMLSelectElement>document.querySelector('select.productsTitle_select');
 
         productsCart.forEach((element, index) => {
@@ -56,16 +70,6 @@ export class Cart {
                 ? productsCart.length.toString()
                 : numberProductsInPage.toString();
         this.renderProductsRows();
-
-        const priceAll = productsCart.reduce((sum, element) => sum + element.price, 0);
-
-        const content = `<div class="content_wrap">
-        <p>Products: <span>${productsCart.length}</span></p>
-        <p>Total: <span>&#8364;${priceAll}</span></p>
-        <input type="search" id="search" placeholder="Enter promo code">
-        <button>BUY NOW</button>
-        </div>`;
-        this.card.renderCard('Summary', content);
 
         select.addEventListener('change', (event) => {
             select.value = (event.target as HTMLSelectElement).value;
@@ -113,7 +117,9 @@ export class Cart {
             const id = card.getAttribute('data-id');
             if (id && target.className === 'add_to_cart') {
                 const product = this.catalogController.getItemById(parseInt(id));
-                if (product) {
+                const span = target.nextSibling as HTMLSpanElement;
+                const count = span.getAttribute('data-count');
+                if (product && count && product.stock > parseInt(count)) {
                     this.cartController.add(product);
                     this.header.update();
                     this.clearProductsRows();
@@ -133,27 +139,20 @@ export class Cart {
 
     public renderProductsRows(): void {
         const productsCart = this.cartController.getProducts();
-        const arrId: number[] = [];
-        const productsCartWithoutRepeats = [];
+        const productsId = productsCart.map((element) => element.id);
+        const uniqProductId = Array.from(new Set(productsId));
 
-        productsCart.forEach((element) => arrId.push(element.id));
-        const arrIdWithoutRepeats = new Set(arrId);
-        arrIdWithoutRepeats.forEach((element) => {
-            const product = this.catalogController.getItemById(element);
-            productsCartWithoutRepeats.push(product);
+        const productsWithCountItem: ProductWithCount[] = uniqProductId.map((productId) => {
+            const productWithCurrentId = productsCart.filter((element) => element.id === productId);
+            return productWithCurrentId.reduce<ProductWithCount>((previousValue, currentValue) => {
+                const { count = 0, price = 0 } = previousValue;
+                return {
+                    ...currentValue,
+                    count: count + 1,
+                    price: price + currentValue.price,
+                };
+            }, {} as ProductWithCount);
         });
-
-        arrId.forEach((element) => {
-            debugger;
-            productsCartWithoutRepeats.forEach((item) => {
-                if (element === item.id && !item.number) {
-                    item.number = 1;
-                } else if (element === item.id && item.number) {
-                    item.number += 1;
-                }
-            });
-        });
-        console.log(productsCartWithoutRepeats);
 
         const select = <HTMLSelectElement>document.querySelector('select.productsTitle_select');
         const limit = parseInt(select.value);
@@ -162,7 +161,7 @@ export class Cart {
         if (atr) {
             const page = parseInt(atr);
 
-            const productsInPage = productsCartWithoutRepeats.slice(limit * (page - 1), limit * page);
+            const productsInPage = productsWithCountItem.slice(limit * (page - 1), limit * page);
             let index = limit * (page - 1) + 1;
 
             productsInPage.forEach((element) => {
@@ -170,10 +169,22 @@ export class Cart {
                 index++;
             });
         }
+        this.updateSummary(productsCart);
     }
 
     public clearProductsRows(): void {
         const productsRows = <HTMLDivElement>document.getElementById('productsRows');
         productsRows.innerHTML = '';
+    }
+
+    public updateSummary(productsCart: Product[]): void {
+        const count = <HTMLSpanElement>document.querySelector('span.cart__count');
+        const price = <HTMLSpanElement>document.querySelector('span.cart__price');
+        console.log(count)
+
+        const priceAll = productsCart.reduce((sum, element) => sum + element.price, 0);
+
+        count.innerText = productsCart.length.toString();
+        price.innerText = `€${priceAll}`;
     }
 }

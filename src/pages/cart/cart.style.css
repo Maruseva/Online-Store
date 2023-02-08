@@ -50,6 +50,10 @@
     box-sizing: border-box;
 }
 
+#productsRows > div:last-child {
+    border-radius: 0 0 10px 10px;
+}
+
 .page {
     display: flex;
     justify-content: space-between;

@@ -104,8 +104,7 @@ export class ProductDetails {
                     this.cartController.add(product);
                     addDeleteButton.innerText = 'DROP FROM CART';
                 }
-                const newCart = this.cartController.getProducts();
-                this.header.update(newCart);
+                this.header.update();
             });
 
             const buyButton = <HTMLButtonElement>document.querySelector('button.productDetails__buy');

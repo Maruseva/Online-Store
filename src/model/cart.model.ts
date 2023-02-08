@@ -15,6 +15,7 @@ export class CartModel {
     }
 
     public delete(id: number): void {
-        this.cart = this.cart.filter((element) => element.id !== id);
+        const index = this.cart.findIndex((element) => element.id === id);
+        this.cart.splice(index, 1);
     }
 }

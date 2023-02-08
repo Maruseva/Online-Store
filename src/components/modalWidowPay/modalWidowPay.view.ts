@@ -32,7 +32,7 @@ export class ModalWidowPay {
 
         modalWidowWrap.addEventListener('click', (event) => {
             if (event.target === modalWidowWrap) {
-                modalWidowWrap.style.display = 'none';
+                modalWidowWrap.remove();
             }
         });
     }

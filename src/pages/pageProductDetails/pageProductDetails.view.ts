@@ -1,5 +1,6 @@
 import { Card } from '../../components/card/card.view';
 import { HeaderView } from '../../components/header/header.view';
+import { ModalWidowPay } from '../../components/modalWidowPay/modalWidowPay.view';
 import { CatalogController } from '../../controller/catalog.controller';
 import { CartController } from '../cart/cart.controller';
 import './pageProductDetails.style.css';
@@ -10,12 +11,14 @@ export class ProductDetails {
     private controller: CatalogController;
     private header: HeaderView;
     private cartController: CartController;
+    private modalWindow: ModalWidowPay;
     constructor(id: string) {
         this.id = id;
         this.controller = new CatalogController();
         this.card = new Card('descriptionsWrap');
         this.header = new HeaderView(this.id);
         this.cartController = new CartController();
+        this.modalWindow = new ModalWidowPay(this.id);
     }
 
     public render(productId: number): void {
@@ -82,7 +85,7 @@ export class ProductDetails {
 
             priceWrap.innerHTML = `<span>&#8364;${product.price}</span>
         <button class="add_delete">${text}</button>
-        <button>BUY NOW</button>`;
+        <button class="productDetails__buy">BUY NOW</button>`;
 
             imagesWrap.addEventListener('click', (event) => {
                 const src = (event.target as HTMLImageElement).getAttribute('src');
@@ -91,7 +94,7 @@ export class ProductDetails {
                 }
             });
 
-            const addDeleteButton = <HTMLButtonElement>document.querySelector('button[class="add_delete"]');
+            const addDeleteButton = <HTMLButtonElement>document.querySelector('button.add_delete');
             addDeleteButton.addEventListener('click', (event) => {
                 const element = event.target as HTMLButtonElement;
                 if (element.innerText !== 'ADD TO CART') {
@@ -103,6 +106,9 @@ export class ProductDetails {
                 }
                 this.header.update();
             });
+
+            const buyButton = <HTMLButtonElement>document.querySelector('button.productDetails__buy');
+            buyButton.addEventListener('click', () => this.modalWindow.render());
         } else {
             main.innerHTML = `<div class="not-found">Product number
             <span>${productId}</span> not found</div>`;

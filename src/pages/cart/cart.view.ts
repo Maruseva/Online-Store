@@ -1,4 +1,5 @@
 import { Card } from '../../components/card/card.view';
+import { ModalWidowPay } from '../../components/modalWidowPay/modalWidowPay.view';
 import { HeaderView } from '../../components/header/header.view';
 import { ProductInRow } from '../../components/productInRow/productInRow.view';
 import { CatalogController } from '../../controller/catalog.controller';
@@ -15,6 +16,7 @@ export class Cart {
     private readonly id: string;
     private productInRow: ProductInRow;
     private card: Card;
+    private modalWindow: ModalWidowPay;
     private cartController: CartController;
     private catalogController: CatalogController;
     private header: HeaderView;
@@ -22,6 +24,7 @@ export class Cart {
         this.id = id;
         this.productInRow = new ProductInRow('productsRows');
         this.card = new Card('cartWrap');
+        this.modalWindow = new ModalWidowPay(this.id);
         this.catalogController = new CatalogController();
         this.cartController = new CartController();
         this.header = new HeaderView(this.id);
@@ -51,7 +54,7 @@ export class Cart {
         <p>Products: <span class="cart__count">${productsCart.length}</span></p>
         <p>Total: <span class="cart__price">&#8364;${priceAll}</span></p>
         <input type="search" id="search" placeholder="Enter promo code">
-        <button>BUY NOW</button>
+        <button class="cart__buy">BUY NOW</button>
         </div>`;
         this.card.renderCard('Summary', content);
 
@@ -135,6 +138,9 @@ export class Cart {
                 changePagesUrl(url, 'product-details', id);
             }
         });
+
+        const buyButton = <HTMLButtonElement>document.querySelector('button.cart__buy');
+        buyButton.addEventListener('click', () => this.modalWindow.render());
     }
 
     public renderProductsRows(): void {
@@ -180,7 +186,6 @@ export class Cart {
     public updateSummary(productsCart: Product[]): void {
         const count = <HTMLSpanElement>document.querySelector('span.cart__count');
         const price = <HTMLSpanElement>document.querySelector('span.cart__price');
-        console.log(count)
 
         const priceAll = productsCart.reduce((sum, element) => sum + element.price, 0);
 

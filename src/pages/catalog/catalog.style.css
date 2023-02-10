@@ -1,0 +1,80 @@
+main {
+    background: #400d06;
+    box-sizing: border-box;
+    padding: 50px 20px;
+    display: flex;
+}
+
+#buttons {
+    text-align: center;
+}
+
+#buttons > button {
+    width: 116px;
+    margin: 5px;
+    background: #181a1c;
+    color: #ff9800;
+    font-size: 20px;
+    border: solid 1px #ff9800;
+    border-radius: 5px;
+}
+
+.catalog {
+    border: solid 3px #ff9800;
+    border-radius: 10px;
+    width: 100%;
+}
+
+#catalogProducts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.catalogHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #251916;
+    border-bottom: solid 1px #ff9800;
+    border-radius: 10px 10px 0 0;
+}
+
+.catalogHead > select {
+    background: #181a1c;
+    margin-left: 3px;
+    color: #ff9800;
+    font-size: 17px;
+    text-align: center;
+    width: 200px;
+    height: 25px;
+    border: solid 1px #ff9800;
+    border-radius: 100px;
+}
+
+.catalogHead_text {
+    color: #f6deb3;
+    font-size: 22px;
+}
+
+.catalogHead > input {
+    background: #181a1c;
+    color: gray;
+    text-align: center;
+    width: 200px;
+    height: 25px;
+    border: solid 1px #ff9800;
+    border-radius: 100px;
+}
+
+.catalogHead_img {
+    padding: 3px;
+    width: 50px;
+    cursor: pointer;
+}
+
+.not-found {
+    color: #ff9800;
+    font-size: 40px;
+    padding-top: 40px;
+}

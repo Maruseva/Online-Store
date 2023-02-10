@@ -1,0 +1,22 @@
+.card_item {
+    position: relative;
+    border: solid 2px #ff9800;
+    border-radius: 10px;
+    margin: 6px;
+    background: #352822;
+    height: fit-content;
+}
+
+.card_item > h3 {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    background: #1a1c1dbf;
+    text-align: center;
+    color: #ff9800;
+    font-size: 20px;
+    margin: 0;
+    border-bottom: solid 2px #ff9800;
+    border-radius: 10px 10px 0 0;
+}

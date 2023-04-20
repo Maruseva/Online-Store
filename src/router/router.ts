@@ -33,12 +33,12 @@ export class Router {
         const pathname = getPathname(url);
         const value = pathname.split('/');
 
-        if (value[1] === '') {
+        if (value[2] === '') {
             this.catalog.render();
-        } else if (value[1] === 'product-details') {
+        } else if (value[2] === 'product-details') {
             const numberProduct = parseInt(value[2]);
             this.details.render(numberProduct);
-        } else if (value[1] === 'cart') {
+        } else if (value[2] === 'cart') {
             const products = this.service.getProducts();
             this.cart.render(products);
         } else {
@@ -54,7 +54,7 @@ export class Router {
         const renderPage = () => {
             const url = window.location.href;
             const pathname = getPathname(url);
-            if (pathname === '/' && this.catalog.state === true) {
+            if (pathname === '/Online-Store/' && this.catalog.state === true) {
                 this.catalog.clearCatalog();
                 this.catalog.renderCatalog();
             } else {
